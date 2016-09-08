@@ -4,30 +4,24 @@
 function staircase() {
     // ****** TODO: PART II ******
 	
-	var rectangles = document.getElementsByTagName("rect");
-		var heights = [];
+	var rectangles  = [];
+	
+	for (var i=0;i<11;i++) {
+		rectangles[i] = parseInt(document.getElementById("barChart1rect" + i).getAttribute("height"));
+	}
+	
+	rectangles.sort(function(a, b){return a-b});
+	
+	console.log(rectangles);
+	
+	for (var i=0;i<11;i++) {
 		
-		for(var i=0;i<11;i++) {
-			
-			heights[i] = rectangles[i].height;
-		}
 		
-		//document.getElementById("barChart1").childNodes = 0;
-		console.log(heights);
-		heights.sort();
-		console.log(heights);
+		document.getElementById("barChart1rect" + i).setAttribute("transform","translate(0,200) scale(1,-1)");
+		document.getElementById("barChart1rect" + i).setAttribute("x",i*15);//.setAttribute("y",);
+		document.getElementById("barChart1rect" + i).setAttribute("height",rectangles[i]);
+	}
 		
-		for (var i=0;i<heights.length;i++) {
-			
-			for(var j=0;j<rectangles.length;j++) {
-				
-				if(rectangles[j].height == heights[i]){
-					
-					rectangles[i].setAttribute("height",heights[i]);//rectangles[j];
-				}
-			}
-			
-		}
 }
 
 function update(error, data) {
