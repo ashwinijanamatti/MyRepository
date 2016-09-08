@@ -3,6 +3,31 @@
 
 function staircase() {
     // ****** TODO: PART II ******
+	
+	var rectangles = document.getElementsByTagName("rect");
+		var heights = [];
+		
+		for(var i=0;i<11;i++) {
+			
+			heights[i] = rectangles[i].height;
+		}
+		
+		//document.getElementById("barChart1").childNodes = 0;
+		console.log(heights);
+		heights.sort();
+		console.log(heights);
+		
+		for (var i=0;i<heights.length;i++) {
+			
+			for(var j=0;j<rectangles.length;j++) {
+				
+				if(rectangles[j].height == heights[i]){
+					
+					rectangles[i].setAttribute("height",heights[i]);//rectangles[j];
+				}
+			}
+			
+		}
 }
 
 function update(error, data) {
