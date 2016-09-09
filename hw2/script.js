@@ -6,17 +6,13 @@ function staircase() {
 	
 	var rectangles  = [];
 	
-	for (var i=0;i<11;i++) {
-		rectangles[i] = parseInt(document.getElementById("barChart1rect" + i).getAttribute("height"));
-	}
+	rectangles = document.getElementById('barChart1').children;
 	
-	rectangles.sort(function(a, b){return a-b});
 	
-	for (var i=0;i<11;i++) {
+	for (var i=0;i<rectangles.length;i++) {
 		
 		
-		document.getElementById("barChart1rect" + i).setAttribute("x",i*15);
-		document.getElementById("barChart1rect" + i).setAttribute("height",rectangles[i]);
+		rectangles[i].setAttribute('height',(i+1)*15);
 	}
 	
 		
@@ -52,15 +48,15 @@ function update(error, data) {
         .domain([0, d3.max(data, function (d) {
             return d.a;
         })])
-        .range([0, 200]);
+        .range([0, 190]);
     var bScale = d3.scaleLinear()
         .domain([0, d3.max(data, function (d) {
             return d.b;
         })])
-        .range([0, 200]);
+        .range([0, 190]);
     var iScale = d3.scaleLinear()
         .domain([0, data.length])
-        .range([0, 200]);
+        .range([0, 190]);
 
     // ****** TODO: PART III (you will also edit in PART V) ******
 
@@ -70,23 +66,15 @@ function update(error, data) {
 	var selection1 = svg1.selectAll("rect")
 					.data(data);
 	
-	selection1.on('mouseover',function(d,i) {
-				this.setAttribute("fill","darkgrey");
-				});
-				
-	selection1.on('mouseout',function(d,i) {
-				this.setAttribute("fill","purple");
-				});	
-	
 	selection1
 			
 				.transition()
-				.duration(3000)
+				.duration(3500)
                 .attr("x", function(d,i) {
-					return i*15;
+					return i*18;
 				})
                 .attr("y", 0)
-                .attr("width", 15)
+                .attr("width", 18)
 				.attr("height", function (d) {
                     return d.a*10;
                 });
@@ -95,23 +83,23 @@ function update(error, data) {
 				.enter()
 				.append('rect')
 				.transition()
-				.duration(3000)
+				.duration(3500)
                 .attr("x", function(d,i) {
-					return i*15;
+					return i*18;
 				})
-				.attr("transform","scale(1,-1) rotate(270)")
-                .attr("y", 0)
-                .attr("width", 15)
+				.attr("y", 0)
+                .attr("width", 18)
 				.attr("height", function (d) {
                     return d.a*10;
                 });
 	
 	selection1
 				.exit()
-				.style("opacity", 1)
+				.attr("height", function(d) {
+				return d.a*10;})
 				.transition()
-				.duration(3000)
-				.style("opacity", 0)
+				.duration(3500)
+				.attr("height", 0)
 				.remove();
 
     // TODO: Select and update the 'b' bar chart bars
@@ -120,22 +108,14 @@ function update(error, data) {
 	var selection2 = svg2.selectAll("rect")
 				.data(data);
 	
-	selection2.on('mouseover',function(d,i) {
-				this.setAttribute("fill","darkgrey");
-				});	
-				
-	selection2.on('mouseout',function(d,i) {
-				this.setAttribute("fill","purple");
-				});	
 	selection2
-				
 				.transition()
-            .duration(3000)
+				.duration(3500)
                 .attr("x", function(d,i) {
-					return i*15;
+					return i*18;
 				})
                 .attr("y", 0)
-                .attr("width", 15)
+                .attr("width", 18)
 				.attr("height", function (d) {
                     return d.b*10;
 				});
@@ -143,24 +123,24 @@ function update(error, data) {
 	selection2
 				.enter()
 				.append('rect')
-				.attr("transform","scale(1,-1) rotate(270)")
 				.transition()
-				.duration(3000)
+				.duration(3500)
                 .attr("x", function(d,i) {
-					return i*15;
+					return i*18;
 				})
                 .attr("y", 0)
-                .attr("width", 15)
+                .attr("width", 18)
 				.attr("height", function (d) {
                     return d.b*10;
 				});
 	
 	selection2
 				.exit()
-				.style("opacity", 1)
+				.attr("height", function(d) {
+				return d.b*10;})
 				.transition()
-				.duration(3000)
-				.style("opacity", 0)
+				.duration(3500)
+				.attr("height", 0)
 				.remove();
 
     // TODO: Select and update the 'a' line chart path using this line generator
@@ -179,7 +159,7 @@ function update(error, data) {
 	
 	selection3
 			.transition()
-			.duration(3000)
+			.duration(3500)
 			.attr("d", aLineGenerator);
 	
 	
@@ -199,7 +179,7 @@ function update(error, data) {
 	
 	selection4
 			.transition()
-			.duration(3000)
+			.duration(3500)
 			.attr("d", bLineGenerator);   
     
     
@@ -219,8 +199,9 @@ function update(error, data) {
 				.datum(data);
 	selection5
 			.transition()
-			.duration(3000)
+			.duration(3500)
 			.attr("d", aAreaGenerator);
+	
 
     // TODO: Select and update the 'b' area chart path (create your own generator)
 
@@ -238,7 +219,7 @@ function update(error, data) {
 				.datum(data);
 	selection6
 			.transition()
-			.duration(3000)
+			.duration(3500)
 			.attr("d", bAreaGenerator);
 	
     // TODO: Select and update the scatterplot points
@@ -246,11 +227,29 @@ function update(error, data) {
 	var svg7 = d3.select("#scatterplotChart");
 	var selection7 = svg7.selectAll("circle")
 				.data(data);
+				
+	var div = d3.select("body").append("div")   
+			.attr("class", "tooltip")               
+			.style("opacity", 0);
 	
 	selection7
+			.on("mouseover", function(d) {   
 			
+			coordinates = d3.mouse(this);					
+            div.transition()        
+                .duration(200)  
+				.style("opacity", .9);
+				div .text(d3.select(this).attr("cx")+","+d3.select(this).attr("cx"))
+				.style("left", (d3.event.pageX) + "px")     
+                .style("top", (d3.event.pageY) + "px");
+			})
+			.on("mouseout", function(d) {       
+				div.transition()        
+                .duration(500)      
+                .style("opacity", 0);   
+			})
 			.transition()
-            .duration(3000)
+            .duration(3500)
 			.style("fill", "steel blue")
             .attr("cx", function(d) {
 				return d.a*10; })
@@ -261,8 +260,23 @@ function update(error, data) {
 	selection7
 			.enter()
 			.append("circle")
+			.on("mouseover", function(d) {   
+			
+			coordinates = d3.mouse(this);			
+				div.transition()        
+					.duration(200)  
+					.style("opacity", .8);
+					div .text(d3.select(this).attr("cx")+","+d3.select(this).attr("cx"))
+					.style("left", (d3.event.pageX) + "px")     
+					.style("top", (d3.event.pageY) + "px");    
+            })
+			.on("mouseout", function(d) {       
+            div.transition()        
+                .duration(500)      
+                .style("opacity", 0);   
+        })
 			.transition()
-            .duration(3000)
+            .duration(3500)
 			.attr("transform"," translate(0 200)  scale(1,-1) ")
 			.style("fill", "steel blue")
             .attr("cx", function(d) {
@@ -271,22 +285,50 @@ function update(error, data) {
 				return d.b*10; })
             .attr("r", 5);
 	
-	svg7.on('click',function(){
-		
-		coordinates = d3.mouse(this);
-		console.log(coordinates[0]);
-		console.log(coordinates[1]);
-	});
-	
 	selection7
 				.exit()
 				.style("opacity", 1)
 				.transition()
-				.duration(3000)
+				.duration(3500)
 				.style("opacity", 0)
 				.remove();
 
     // ****** TODO: PART IV ******
+	
+	selection1.on('mouseover',function(d,i) {
+				this.setAttribute("fill","darkred");
+				});
+				
+	selection1.on('mouseout',function(d,i) {
+				this.setAttribute("fill","#FFC300");
+				});	
+				
+	selection2.on('mouseover',function(d,i) {
+				this.setAttribute("fill","darkred");
+				});	
+				
+	selection2.on('mouseout',function(d,i) {
+				this.setAttribute("fill","#FFC300");
+				});	
+	
+	
+	selection7.on('click',function(evt){
+		
+		
+		
+		console.log(d3.select(this).attr("cx")+","+d3.select(this).attr("cx"));
+		//coordinates = d3.mouse(this);
+		//console.log(coordinates[0]);
+		//console.log(coordinates[1]);
+	});
+	
+	/*var tooltip = d3.selectAll()
+    .append("div")
+    .style("position", "absolute")
+    .style("z-index", "10")
+    .style("visibility", "hidden")
+    .text("a simple tooltip")
+	.on("mouseover", function(){return tooltip.style("visibility", "visible");});*/
 }
 
 
