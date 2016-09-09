@@ -14,12 +14,11 @@ function staircase() {
 	
 	for (var i=0;i<11;i++) {
 		
-		//document.getElementById("barChart1rect" + i).removeAttribute("transform");
-		//"barChart1rect" + i)
-		document.getElementById("barChart1rect" + i).setAttribute("x",i*15);//.setAttribute("y",);
+		
+		document.getElementById("barChart1rect" + i).setAttribute("x",i*15);
 		document.getElementById("barChart1rect" + i).setAttribute("height",rectangles[i]);
 	}
-	//document.getElementById("group1").setAttribute("transform","translate(0,200) scale(1,-1)");
+	
 		
 }
 
@@ -67,19 +66,19 @@ function update(error, data) {
 
     // TODO: Select and update the 'a' bar chart bars
 	
-	var svg = d3.select("#barChart1");
-	var selection = svg.selectAll("rect")
+	var svg1 = d3.select("#barChart1");
+	var selection1 = svg1.selectAll("rect")
 					.data(data);
 	
-	selection.on('mouseover',function(d,i) {
-				this.setAttribute("fill","teal");
+	selection1.on('mouseover',function(d,i) {
+				this.setAttribute("fill","darkgrey");
 				});
 				
-	selection.on('mouseout',function(d,i) {
-				this.setAttribute("fill","steelblue");
+	selection1.on('mouseout',function(d,i) {
+				this.setAttribute("fill","purple");
 				});	
 	
-	selection
+	selection1
 			
 				.transition()
 				.duration(3000)
@@ -88,30 +87,48 @@ function update(error, data) {
 				})
                 .attr("y", 0)
                 .attr("width", 15)
-				
-                .attr("height", function (d) {
+				.attr("height", function (d) {
                     return d.a*10;
-                })
-				.style("fill","steel blue");
+                });
+				
+	selection1
+				.enter()
+				.append('rect')
+				.transition()
+				.duration(3000)
+                .attr("x", function(d,i) {
+					return i*15;
+				})
+				.attr("transform","scale(1,-1) rotate(270)")
+                .attr("y", 0)
+                .attr("width", 15)
+				.attr("height", function (d) {
+                    return d.a*10;
+                });
 	
-	selection.exit()
-			.remove();
+	selection1
+				.exit()
+				.style("opacity", 1)
+				.transition()
+				.duration(3000)
+				.style("opacity", 0)
+				.remove();
 
     // TODO: Select and update the 'b' bar chart bars
 	
-	svg = d3.select("#barChart2");
-	selection = svg.selectAll("rect")
+	var svg2 = d3.select("#barChart2");
+	var selection2 = svg2.selectAll("rect")
 				.data(data);
 	
-	selection.on('mouseover',function(d,i) {
-				this.setAttribute("fill","teal");
+	selection2.on('mouseover',function(d,i) {
+				this.setAttribute("fill","darkgrey");
 				});	
 				
-	selection.on('mouseout',function(d,i) {
-				this.setAttribute("fill","steelblue");
+	selection2.on('mouseout',function(d,i) {
+				this.setAttribute("fill","purple");
 				});	
-	selection
-			
+	selection2
+				
 				.transition()
             .duration(3000)
                 .attr("x", function(d,i) {
@@ -119,14 +136,32 @@ function update(error, data) {
 				})
                 .attr("y", 0)
                 .attr("width", 15)
-				//.attr("transform",function(d))
-                .attr("height", function (d) {
+				.attr("height", function (d) {
                     return d.b*10;
+				});
+				
+	selection2
+				.enter()
+				.append('rect')
+				.attr("transform","scale(1,-1) rotate(270)")
+				.transition()
+				.duration(3000)
+                .attr("x", function(d,i) {
+					return i*15;
 				})
-			.style("fill","steel blue");
+                .attr("y", 0)
+                .attr("width", 15)
+				.attr("height", function (d) {
+                    return d.b*10;
+				});
 	
-	selection.exit()
-			.remove();
+	selection2
+				.exit()
+				.style("opacity", 1)
+				.transition()
+				.duration(3000)
+				.style("opacity", 0)
+				.remove();
 
     // TODO: Select and update the 'a' line chart path using this line generator
 	
@@ -138,11 +173,11 @@ function update(error, data) {
             return aScale(d.a);
         });
 
-	svg = d3.select("#lineChart1");
-	selection = svg.select("path")
+	var svg3 = d3.select("#lineChart1");
+	var selection3 = svg3.select("path")
 				.datum(data);
 	
-	selection
+	selection3
 			.transition()
 			.duration(3000)
 			.attr("d", aLineGenerator);
@@ -150,7 +185,7 @@ function update(error, data) {
 	
     // TODO: Select and update the 'b' line chart path (create your own generator)
 	
-	svg = d3.select("#lineChart2");
+	var svg4 = d3.select("#lineChart2");
 	var bLineGenerator = d3.line()
         .x(function (d, i) {
             return iScale(i);
@@ -159,10 +194,10 @@ function update(error, data) {
             return bScale(d.b);
 		});
 		
-    selection = svg.select("path")
+    var selection4 = svg4.select("path")
 				.datum(data);
 	
-	selection
+	selection4
 			.transition()
 			.duration(3000)
 			.attr("d", bLineGenerator);   
@@ -179,10 +214,10 @@ function update(error, data) {
             return aScale(d.a);
         });
 		
-	svg = d3.select("#areaChart1");
-	selection = svg.select("path")
+	var svg5 = d3.select("#areaChart1");
+	var selection5 = svg5.select("path")
 				.datum(data);
-	selection
+	selection5
 			.transition()
 			.duration(3000)
 			.attr("d", aAreaGenerator);
@@ -198,21 +233,21 @@ function update(error, data) {
             return bScale(d.b);
         });
 		
-	svg = d3.select("#areaChart2");
-	selection = svg.select("path")
+	var svg6 = d3.select("#areaChart2");
+	var selection6 = svg6.select("path")
 				.datum(data);
-	selection
+	selection6
 			.transition()
 			.duration(3000)
 			.attr("d", bAreaGenerator);
 	
     // TODO: Select and update the scatterplot points
 	
-	svg = d3.select("#scatterplotChart");
-	selection = svg.selectAll("circle")
+	var svg7 = d3.select("#scatterplotChart");
+	var selection7 = svg7.selectAll("circle")
 				.data(data);
 	
-	selection
+	selection7
 			
 			.transition()
             .duration(3000)
@@ -222,11 +257,38 @@ function update(error, data) {
             .attr("cy", function(d) {
 				return d.b*10; })
             .attr("r", 5);
+			
+	selection7
+			.enter()
+			.append("circle")
+			.transition()
+            .duration(3000)
+			.attr("transform"," translate(0 200)  scale(1,-1) ")
+			.style("fill", "steel blue")
+            .attr("cx", function(d) {
+				return d.a*10; })
+            .attr("cy", function(d) {
+				return d.b*10; })
+            .attr("r", 5);
 	
+	svg7.on('click',function(){
+		
+		coordinates = d3.mouse(this);
+		console.log(coordinates[0]);
+		console.log(coordinates[1]);
+	});
 	
+	selection7
+				.exit()
+				.style("opacity", 1)
+				.transition()
+				.duration(3000)
+				.style("opacity", 0)
+				.remove();
 
     // ****** TODO: PART IV ******
 }
+
 
 function changeData() {
     // // Load the file indicated by the select menu
@@ -258,4 +320,9 @@ function randomSubset() {
     else{
         changeData();
     }
+}
+
+window.onload = function() {
+	
+	changeData();
 }

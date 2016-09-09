@@ -8,13 +8,13 @@
     <title>Homework 2 Solution</title>
     <style>
         .barChart {
-            fill: steelblue;
+            fill: purple;
             stroke: darkgray;
             stroke-width: 1px;
         }
 
         /*.barChart rect:hover {
-            fill: seagreen;
+            fill: darkgray;
         }*/
 
         .lines {
@@ -79,7 +79,7 @@
 </span>
 
 <span>
-    <input type="checkbox" id="random" onchange=""> Random Subset
+    <input type="checkbox" id="random" onchange="randomSubset()"> Random Subset
 </span>
 
 <br/>
@@ -88,7 +88,7 @@
     <h2>Bar Charts</h2>
     <svg id=barChart1 class="barChart" width="200" height="200">
         <!-- Paste your HW 1 solution here -->
-		<g id="group1" transform="scale(1,-1) rotate(270)">
+		<g transform="scale(1,-1) rotate(270)">
 			<rect id=barChart1rect0 x=0 y=0 width="15" height="100" />
 			<rect id=barChart1rect1 x=15 y=0 width="15" height="80"/>
 			<rect id=barChart1rect2 x=30 y=0 width="15" height="130"/>
@@ -125,12 +125,12 @@
 <div>
     <h2>Line Charts</h2>
 
-    <svg id=lineChart1 width="200" height="200" class="lines">
+    <svg id=lineChart1 class="lines" width="200" height="200" class="lines">
         <!-- Paste your HW 1 solution here -->
 		<path id="path1" d="M 0 100 L 20 80 L 40 130 L 60 190 L 80 110 L 100 140 L 120 60 L 140 40 L 160 120 L 180 70 L 200 40" transform="translate(0 200) scale(1, -1)"/>
     </svg>
 
-    <svg id=lineChart2 width="200" height="200" class="lines">
+    <svg id=lineChart2 class="lines" width="200" height="200" class="lines">
         <!-- Paste your HW 1 solution here -->
 		<path d="M 0 80.4 L 20 69.5 L 40 75.8 L 60 88.1 L 80 83.3 L 100 99.6 L 120 72.4 L 140 42.6 L 160 108.4 L 180 24.1 L 200 56.8" transform="translate(0 200) scale(1, -1)" />
 		
@@ -140,12 +140,12 @@
 <div>
     <h2>Area Charts</h2>
 
-    <svg id=areaChart1 width="200" height="200">
+    <svg id=areaChart1 class="areas" width="200" height="200">
         <!-- Paste your HW 1 solution here -->
 		<path  d="M 0 100 L 20 80 L 40 130 L 60 190 L 80 110 L 100 140 L 120 60 L 140 40 L 160 120 L 180 70 L 200 40 L 200 0 L 0 0 Z" transform="translate(0 200) scale(1, -1)"/>
     </svg>
 
-    <svg id=areaChart2 width="200" height="200">
+    <svg id=areaChart2 class="areas" width="200" height="200">
         <!-- Paste your HW 1 solution here -->
 		<path d="M 0 80.4 L 20 69.5 L 40 75.8 L 60 88.1 L 80 83.3 L 100 99.6 L 120 72.4 L 140 42.6 L 160 108.4 L 180 24.1 L 200 56.8 L 200 0 L 0 0 Z" transform="translate(0 200) scale(1, -1)" />
 		
