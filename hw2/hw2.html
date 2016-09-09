@@ -13,9 +13,9 @@
             stroke-width: 1px;
         }
 
-        .barChart rect:hover {
+        /*.barChart rect:hover {
             fill: seagreen;
-        }
+        }*/
 
         .lines {
             stroke: steelblue;
@@ -132,19 +132,8 @@
 
     <svg id=lineChart2 width="200" height="200" class="lines">
         <!-- Paste your HW 1 solution here -->
-		<g transform="translate(0 200) scale(1, -1)">
-						<line x1="0" y1="80.4" x2="20" y2="69.5" />
-						<line x1="20" y1="69.5" x2="40" y2="75.8" />
-						<line x1="40" y1="75.8" x2="60" y2="88.1" />
-						<line x1="60" y1="88.1" x2="80" y2="83.3" />
-						<line x1="80" y1="83.3" x2="100" y2="99.6" />
-						<line x1="100" y1="99.6" x2="120" y2="72.4" />
-						<line x1="120" y1="72.4" x2="140" y2="42.6" />
-						<line x1="140" y1="42.6" x2="160" y2="108.4" />
-						<line x1="160" y1="108.4" x2="180" y2="24.1" />
-						<line x1="180" y1="24.1" x2="200" y2="56.8" />
-					
-					</g>
+		<path d="M 0 80.4 L 20 69.5 L 40 75.8 L 60 88.1 L 80 83.3 L 100 99.6 L 120 72.4 L 140 42.6 L 160 108.4 L 180 24.1 L 200 56.8" transform="translate(0 200) scale(1, -1)" />
+		
     </svg>
 </div>
 
@@ -158,7 +147,8 @@
 
     <svg id=areaChart2 width="200" height="200">
         <!-- Paste your HW 1 solution here -->
-		<polyline points="0,80.4 20,69.5 40,75.8 60,88.1 80,83.3 100,99.6 120,72.4 140,42.6 160,108.4 180,24.1 200,56.8 200,0 0,0" transform="translate(0 200) scale(1, -1)"/>
+		<path d="M 0 80.4 L 20 69.5 L 40 75.8 L 60 88.1 L 80 83.3 L 100 99.6 L 120 72.4 L 140 42.6 L 160 108.4 L 180 24.1 L 200 56.8 L 200 0 L 0 0 Z" transform="translate(0 200) scale(1, -1)" />
+		
     </svg>
 </div>
 

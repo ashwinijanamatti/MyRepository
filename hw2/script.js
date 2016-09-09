@@ -19,7 +19,7 @@ function staircase() {
 		document.getElementById("barChart1rect" + i).setAttribute("x",i*15);//.setAttribute("y",);
 		document.getElementById("barChart1rect" + i).setAttribute("height",rectangles[i]);
 	}
-	document.getElementById("group1").setAttribute("transform","translate(0,200) scale(1,-1)");
+	//document.getElementById("group1").setAttribute("transform","translate(0,200) scale(1,-1)");
 		
 }
 
@@ -53,15 +53,15 @@ function update(error, data) {
         .domain([0, d3.max(data, function (d) {
             return d.a;
         })])
-        .range([0, 150]);
+        .range([0, 200]);
     var bScale = d3.scaleLinear()
         .domain([0, d3.max(data, function (d) {
             return d.b;
         })])
-        .range([0, 150]);
+        .range([0, 200]);
     var iScale = d3.scaleLinear()
         .domain([0, data.length])
-        .range([0, 110]);
+        .range([0, 200]);
 
     // ****** TODO: PART III (you will also edit in PART V) ******
 
@@ -71,6 +71,13 @@ function update(error, data) {
 	var selection = svg.selectAll("rect")
 					.data(data);
 	
+	selection.on('mouseover',function(d,i) {
+				this.setAttribute("fill","teal");
+				});
+				
+	selection.on('mouseout',function(d,i) {
+				this.setAttribute("fill","steelblue");
+				});	
 	
 	selection
 			
@@ -95,7 +102,14 @@ function update(error, data) {
 	svg = d3.select("#barChart2");
 	selection = svg.selectAll("rect")
 				.data(data);
+	
+	selection.on('mouseover',function(d,i) {
+				this.setAttribute("fill","teal");
+				});	
 				
+	selection.on('mouseout',function(d,i) {
+				this.setAttribute("fill","steelblue");
+				});	
 	selection
 			
 				.transition()
@@ -125,7 +139,8 @@ function update(error, data) {
         });
 
 	svg = d3.select("#lineChart1");
-	selection = svg.selectAll("path");
+	selection = svg.select("path")
+				.datum(data);
 	
 	selection
 			.transition()
@@ -136,8 +151,24 @@ function update(error, data) {
     // TODO: Select and update the 'b' line chart path (create your own generator)
 	
 	svg = d3.select("#lineChart2");
-	selection = svg.selectAll("rect");
-
+	var bLineGenerator = d3.line()
+        .x(function (d, i) {
+            return iScale(i);
+        })
+        .y(function (d) {
+            return bScale(d.b);
+		});
+		
+    selection = svg.select("path")
+				.datum(data);
+	
+	selection
+			.transition()
+			.duration(3000)
+			.attr("d", bLineGenerator);   
+    
+    
+			
     // TODO: Select and update the 'a' area chart path using this line generator
     var aAreaGenerator = d3.area()
         .x(function (d, i) {
@@ -149,12 +180,31 @@ function update(error, data) {
         });
 		
 	svg = d3.select("#areaChart1");
-	selection = svg.selectAll("rect");
+	selection = svg.select("path")
+				.datum(data);
+	selection
+			.transition()
+			.duration(3000)
+			.attr("d", aAreaGenerator);
 
     // TODO: Select and update the 'b' area chart path (create your own generator)
 
+	var bAreaGenerator = d3.area()
+        .x(function (d, i) {
+            return iScale(i);
+        })
+        .y0(0)
+        .y1(function (d) {
+            return bScale(d.b);
+        });
+		
 	svg = d3.select("#areaChart2");
-	selection = svg.selectAll("rect");
+	selection = svg.select("path")
+				.datum(data);
+	selection
+			.transition()
+			.duration(3000)
+			.attr("d", bAreaGenerator);
 	
     // TODO: Select and update the scatterplot points
 	
@@ -173,8 +223,7 @@ function update(error, data) {
 				return d.b*10; })
             .attr("r", 5);
 	
-	selection.exit()
-			.remove();
+	
 
     // ****** TODO: PART IV ******
 }
