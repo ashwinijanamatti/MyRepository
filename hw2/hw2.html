@@ -29,6 +29,7 @@
 
         circle {
             fill: steelblue;
+			stroke: darkgrey;
 			
         }
 
@@ -87,44 +88,49 @@
     <h2>Bar Charts</h2>
     <svg id=barChart1 class="barChart" width="200" height="200">
         <!-- Paste your HW 1 solution here -->
-					<rect id=barChart1rect0 x=0 y=0 width="15" height="100" transform="translate(100 150) rotate(90)" />
-					<rect id=barChart1rect1 x=0 y=0 width="15" height="80" transform="translate(80 135) rotate(90)"/>
-					<rect id=barChart1rect2 x=0 y=0 width="15" height="130" transform="translate(130 120) rotate(90)"/>
-					<rect id=barChart1rect3 x=0 y=0 width="15" height="90" transform="translate(90 105) rotate(90)"/>
-					<rect id=barChart1rect4 x=0 y=0 width="15" height="110" transform="translate(110 90) rotate(90)"/>
-					<rect id=barChart1rect5 x=0 y=0 width="15" height="140" transform="translate(140 75) rotate(90)"/>
-					<rect id=barChart1rect6 x=0 y=0 width="15" height="60" transform="translate(60 60) rotate(90)"/>
-					<rect id=barChart1rect7 x=0 y=0 width="15" height="40" transform="translate(40 45) rotate(90)"/>
-					<rect id=barChart1rect8 x=0 y=0 width="15" height="120" transform="translate(120 30) rotate(90)"/>
-					<rect id=barChart1rect9 x=0 y=0 width="15" height="70" transform="translate(70 15) rotate(90)"/>
-					<rect id=barChart1rect10 x=0 y=0 width="15" height="40" transform="translate(40 0) rotate(90)"/>
+		<g id="group1" transform="scale(1,-1) rotate(270)">
+			<rect id=barChart1rect0 x=0 y=0 width="15" height="100" />
+			<rect id=barChart1rect1 x=15 y=0 width="15" height="80"/>
+			<rect id=barChart1rect2 x=30 y=0 width="15" height="130"/>
+			<rect id=barChart1rect3 x=45 y=0 width="15" height="90"/>
+			<rect id=barChart1rect4 x=60 y=0 width="15" height="110"/>
+			<rect id=barChart1rect5 x=75 y=0 width="15" height="140"/>
+			<rect id=barChart1rect6 x=90 y=0 width="15" height="60"/>
+			<rect id=barChart1rect7 x=105 y=0 width="15" height="40"/>
+			<rect id=barChart1rect8 x=120 y=0 width="15" height="120"/>
+			<rect id=barChart1rect9 x=135 y=0 width="15" height="70"/>
+			<rect id=barChart1rect10 x=150 y=0 width="15" height="40"/>
+		</g>
     </svg>
 
-    <svg class="barChart" width="200" height="200" >
+    <svg id=barChart2 class="barChart" width="200" height="200" >
         <!-- Paste your HW 1 solution here -->
-					<rect x=0 y=0 width="15" height="80.4" transform="translate(80.4 150) rotate(90)"/>
-					<rect x=0 y=0 width="15" height="69.5" transform="translate(69.5 135) rotate(90)"/>
-					<rect x=0 y=0 width="15" height="75.8" transform="translate(75.8 120) rotate(90)"/>
-					<rect x=0 y=0 width="15" height="88.1" transform="translate(88.1 105) rotate(90)"/>
-					<rect x=0 y=0 width="15" height="83.3" transform="translate(83.3 90) rotate(90)"/>
-					<rect x=0 y=0 width="15" height="99.6" transform="translate(99.6 75) rotate(90)"/>
-					<rect x=0 y=0 width="15" height="72.4" transform="translate(72.4 60) rotate(90)"/>
-					<rect x=0 y=0 width="15" height="42.6" transform="translate(42.6 45) rotate(90)"/>
-					<rect x=0 y=0 width="15" height="108.4" transform="translate(108.4 30) rotate(90)"/>
-					<rect x=0 y=0 width="15" height="48.2" transform="translate(48.2 15) rotate(90)"/>
-					<rect x=0 y=0 width="15" height="56.8" transform="translate(56.8) rotate(90)"/>
+		<g transform="scale(1,-1) rotate(270)">
+					<rect x=0 y=0 width="15" height="80.4" />
+					<rect x=15 y=0 width="15" height="69.5" />
+					<rect x=30 y=0 width="15" height="75.8" />
+					<rect x=45 y=0 width="15" height="88.1" />
+					<rect x=60 y=0 width="15" height="83.3" />
+					<rect x=75 y=0 width="15" height="99.6" />
+					<rect x=90 y=0 width="15" height="72.4" />
+					<rect x=105 y=0 width="15" height="42.6" />
+					<rect x=120 y=0 width="15" height="108.4" />
+					<rect x=135 y=0 width="15" height="48.2" />
+					<rect x=150 y=0 width="15" height="56.8" />
+					
+		</g>
     </svg>
 </div>
 
 <div>
     <h2>Line Charts</h2>
 
-    <svg width="200" height="200" class="lines">
+    <svg id=lineChart1 width="200" height="200" class="lines">
         <!-- Paste your HW 1 solution here -->
 		<path id="path1" d="M 0 100 L 20 80 L 40 130 L 60 190 L 80 110 L 100 140 L 120 60 L 140 40 L 160 120 L 180 70 L 200 40" transform="translate(0 200) scale(1, -1)"/>
     </svg>
 
-    <svg width="200" height="200" class="lines">
+    <svg id=lineChart2 width="200" height="200" class="lines">
         <!-- Paste your HW 1 solution here -->
 		<g transform="translate(0 200) scale(1, -1)">
 						<line x1="0" y1="80.4" x2="20" y2="69.5" />
@@ -145,12 +151,12 @@
 <div>
     <h2>Area Charts</h2>
 
-    <svg width="200" height="200">
+    <svg id=areaChart1 width="200" height="200">
         <!-- Paste your HW 1 solution here -->
 		<path  d="M 0 100 L 20 80 L 40 130 L 60 190 L 80 110 L 100 140 L 120 60 L 140 40 L 160 120 L 180 70 L 200 40 L 200 0 L 0 0 Z" transform="translate(0 200) scale(1, -1)"/>
     </svg>
 
-    <svg width="200" height="200">
+    <svg id=areaChart2 width="200" height="200">
         <!-- Paste your HW 1 solution here -->
 		<polyline points="0,80.4 20,69.5 40,75.8 60,88.1 80,83.3 100,99.6 120,72.4 140,42.6 160,108.4 180,24.1 200,56.8 200,0 0,0" transform="translate(0 200) scale(1, -1)"/>
     </svg>
@@ -159,7 +165,7 @@
 <div>
     <h2>Scatterplot</h2>
 
-    <svg width="200" height="200" >
+    <svg id=scatterplotChart width="200" height="200" >
         <!-- Paste your HW 1 solution here -->
 		<g transform=" translate(0 200)  scale(1,-1) ">
 					<circle cx="100" cy="80.4" r="5" />

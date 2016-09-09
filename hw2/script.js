@@ -12,15 +12,14 @@ function staircase() {
 	
 	rectangles.sort(function(a, b){return a-b});
 	
-	console.log(rectangles);
-	
 	for (var i=0;i<11;i++) {
 		
-		
-		document.getElementById("barChart1rect" + i).setAttribute("transform","translate(0,200) scale(1,-1)");
+		//document.getElementById("barChart1rect" + i).removeAttribute("transform");
+		//"barChart1rect" + i)
 		document.getElementById("barChart1rect" + i).setAttribute("x",i*15);//.setAttribute("y",);
 		document.getElementById("barChart1rect" + i).setAttribute("height",rectangles[i]);
 	}
+	document.getElementById("group1").setAttribute("transform","translate(0,200) scale(1,-1)");
 		
 }
 
@@ -67,10 +66,56 @@ function update(error, data) {
     // ****** TODO: PART III (you will also edit in PART V) ******
 
     // TODO: Select and update the 'a' bar chart bars
+	
+	var svg = d3.select("#barChart1");
+	var selection = svg.selectAll("rect")
+					.data(data);
+	
+	
+	selection
+			
+				.transition()
+				.duration(3000)
+                .attr("x", function(d,i) {
+					return i*15;
+				})
+                .attr("y", 0)
+                .attr("width", 15)
+				
+                .attr("height", function (d) {
+                    return d.a*10;
+                })
+				.style("fill","steel blue");
+	
+	selection.exit()
+			.remove();
 
     // TODO: Select and update the 'b' bar chart bars
+	
+	svg = d3.select("#barChart2");
+	selection = svg.selectAll("rect")
+				.data(data);
+				
+	selection
+			
+				.transition()
+            .duration(3000)
+                .attr("x", function(d,i) {
+					return i*15;
+				})
+                .attr("y", 0)
+                .attr("width", 15)
+				//.attr("transform",function(d))
+                .attr("height", function (d) {
+                    return d.b*10;
+				})
+			.style("fill","steel blue");
+	
+	selection.exit()
+			.remove();
 
     // TODO: Select and update the 'a' line chart path using this line generator
+	
     var aLineGenerator = d3.line()
         .x(function (d, i) {
             return iScale(i);
@@ -79,7 +124,19 @@ function update(error, data) {
             return aScale(d.a);
         });
 
+	svg = d3.select("#lineChart1");
+	selection = svg.selectAll("path");
+	
+	selection
+			.transition()
+			.duration(3000)
+			.attr("d", aLineGenerator);
+	
+	
     // TODO: Select and update the 'b' line chart path (create your own generator)
+	
+	svg = d3.select("#lineChart2");
+	selection = svg.selectAll("rect");
 
     // TODO: Select and update the 'a' area chart path using this line generator
     var aAreaGenerator = d3.area()
@@ -90,10 +147,34 @@ function update(error, data) {
         .y1(function (d) {
             return aScale(d.a);
         });
+		
+	svg = d3.select("#areaChart1");
+	selection = svg.selectAll("rect");
 
     // TODO: Select and update the 'b' area chart path (create your own generator)
 
+	svg = d3.select("#areaChart2");
+	selection = svg.selectAll("rect");
+	
     // TODO: Select and update the scatterplot points
+	
+	svg = d3.select("#scatterplotChart");
+	selection = svg.selectAll("circle")
+				.data(data);
+	
+	selection
+			
+			.transition()
+            .duration(3000)
+			.style("fill", "steel blue")
+            .attr("cx", function(d) {
+				return d.a*10; })
+            .attr("cy", function(d) {
+				return d.b*10; })
+            .attr("r", 5);
+	
+	selection.exit()
+			.remove();
 
     // ****** TODO: PART IV ******
 }
