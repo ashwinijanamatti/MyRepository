@@ -82,13 +82,20 @@ function update(error, data) {
 	selection1
 				.enter()
 				.append('rect')
-				.transition()
-				.duration(3500)
-                .attr("x", function(d,i) {
+				.attr("x", function(d,i) {
 					return i*18;
 				})
+				.on('mouseover',function(d,i) {
+				this.setAttribute("fill","darkred");
+				})
+				.on('mouseout',function(d,i) {
+				this.setAttribute("fill","#FFC300");
+				})
 				.attr("y", 0)
+				.attr('height', 0)
                 .attr("width", 18)
+				.transition()
+				.duration(3500)
 				.attr("height", function (d) {
                     return d.a*10;
                 });
@@ -123,13 +130,20 @@ function update(error, data) {
 	selection2
 				.enter()
 				.append('rect')
-				.transition()
-				.duration(3500)
-                .attr("x", function(d,i) {
+				.attr("x", function(d,i) {
 					return i*18;
 				})
+				.on('mouseover',function(d,i) {
+				this.setAttribute("fill","darkred");
+				})
+				.on('mouseout',function(d,i) {
+				this.setAttribute("fill","#FFC300");
+				})
                 .attr("y", 0)
+				.attr('height', 0)
                 .attr("width", 18)
+				.transition()
+				.duration(3500)
 				.attr("height", function (d) {
                     return d.b*10;
 				});
@@ -156,11 +170,12 @@ function update(error, data) {
 	var svg3 = d3.select("#lineChart1");
 	var selection3 = svg3.select("path")
 				.datum(data);
+
 	
 	selection3
 			.transition()
 			.duration(3500)
-			.attr("d", aLineGenerator);
+			.attr("d", aLineGenerator);   
 	
 	
     // TODO: Select and update the 'b' line chart path (create your own generator)
@@ -202,7 +217,6 @@ function update(error, data) {
 			.duration(3500)
 			.attr("d", aAreaGenerator);
 	
-
     // TODO: Select and update the 'b' area chart path (create your own generator)
 
 	var bAreaGenerator = d3.area()
@@ -239,9 +253,15 @@ function update(error, data) {
             div.transition()        
                 .duration(200)  
 				.style("opacity", .9);
-				div .text(d3.select(this).attr("cx")+","+d3.select(this).attr("cx"))
+				div .text(parseFloat(d3.select(this).attr("cx")).toFixed(2)+"," + parseFloat(d3.select(this).attr("cy")).toFixed(2))
 				.style("left", (d3.event.pageX) + "px")     
                 .style("top", (d3.event.pageY) + "px");
+			
+				div.transition() 			
+				.delay(4000)
+				.transition()
+				.duration(500)
+				.style("opacity", 0);
 			})
 			.on("mouseout", function(d) {       
 				div.transition()        
@@ -260,30 +280,41 @@ function update(error, data) {
 	selection7
 			.enter()
 			.append("circle")
+			.on('click',function(evt){
+		
+				console.log(parseFloat(d3.select(this).attr("cx")).toFixed(2)+"," + parseFloat(d3.select(this).attr("cy")).toFixed(2));
+			})
 			.on("mouseover", function(d) {   
 			
-			coordinates = d3.mouse(this);			
+				coordinates = d3.mouse(this);			
 				div.transition()        
 					.duration(200)  
 					.style("opacity", .8);
-					div .text(d3.select(this).attr("cx")+","+d3.select(this).attr("cx"))
+					div .text(parseFloat(d3.select(this).attr("cx")).toFixed(2)+"," + parseFloat(d3.select(this).attr("cy")).toFixed(2))
 					.style("left", (d3.event.pageX) + "px")     
-					.style("top", (d3.event.pageY) + "px");    
+					.style("top", (d3.event.pageY) + "px");
+			
+				div.transition() 			
+				.delay(4000)
+				.transition()
+				.duration(500)
+				.style("opacity", 0);
             })
 			.on("mouseout", function(d) {       
             div.transition()        
                 .duration(500)      
                 .style("opacity", 0);   
-        })
-			.transition()
-            .duration(3500)
-			.attr("transform"," translate(0 200)  scale(1,-1) ")
-			.style("fill", "steel blue")
-            .attr("cx", function(d) {
+			})
+			.style('opacity',0)
+			.attr("cx", function(d) {
 				return d.a*10; })
             .attr("cy", function(d) {
 				return d.b*10; })
-            .attr("r", 5);
+            .attr("r", 5)
+			.transition()
+			.duration(3500)
+			.style('opacity',1);
+			
 	
 	selection7
 				.exit()
@@ -314,21 +345,11 @@ function update(error, data) {
 	
 	selection7.on('click',function(evt){
 		
-		
-		
-		console.log(d3.select(this).attr("cx")+","+d3.select(this).attr("cx"));
-		//coordinates = d3.mouse(this);
-		//console.log(coordinates[0]);
-		//console.log(coordinates[1]);
+		console.log(parseFloat(d3.select(this).attr("cx")).toFixed(2)+"," + parseFloat(d3.select(this).attr("cy")).toFixed(2));
 	});
 	
-	/*var tooltip = d3.selectAll()
-    .append("div")
-    .style("position", "absolute")
-    .style("z-index", "10")
-    .style("visibility", "hidden")
-    .text("a simple tooltip")
-	.on("mouseover", function(){return tooltip.style("visibility", "visible");});*/
+	
+	
 }
 
 
