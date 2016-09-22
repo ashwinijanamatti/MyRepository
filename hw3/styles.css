@@ -2,6 +2,7 @@
 .countries {
     stroke: #f7f7f7;
     fill: #d9d9d9;
+	stroke-width: 1.3px;
 }
 
 .legend-element {
@@ -42,6 +43,7 @@
 .grat {
     stroke: grey;
     stroke-width: 1px;
+	fill: none;
     opacity: .2;
 }
 
@@ -125,6 +127,17 @@ header {
     border-left-style: solid;
 }
 
+#info-panel {
+	
+	border-width: 1px;
+	border-left-style: solid ;
+	border-color: #000;
+}
+
+#info-panel li{
+	
+	color: #000;
+}
 
 #links > line {
     stroke: rgb(216, 216, 216);
@@ -145,11 +158,12 @@ header {
 /* Styles that clean up the layout;
  * you can ignore these: */
 
-/*div {*/
-/*display: inline-block;*/
-/*border: 1px solid lightgray;*/
-/*margin: 10px;*/
-/*}*/
+div {
+	
+display: inline-block;
+border: 1px solid lightgray;
+margin: 10px;
+}
 
 /*div,*/
 /*span {*/
