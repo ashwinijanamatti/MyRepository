@@ -7,8 +7,8 @@ var tableElements;
 
 /** Variables to be used when sizing the svgs in the table cells.*/
 var cellWidth = 70,
-    cellHeight = 20,
-    cellBuffer = 15,
+    cellHeight = 30,
+    cellBuffer = 8,
     barHeight = 20;
 
 /**Set variables for commonly accessed data columns*/
@@ -54,7 +54,7 @@ d3.json('data/fifa-matches.json',function(error,data){
     teamData = data;
     createTable();
     updateTable();
-})
+});
 
 
 // // ********************** HACKER VERSION ***************************
@@ -94,6 +94,27 @@ function createTable() {
 
 // ******* TODO: PART II *******
 
+
+
+    goalScale.domain([0,d3.max(teamData, function(d){
+
+                        return d3.max([d.value['Goals Made'],d.value['Goals Conceded']]);
+                    })]);
+
+    var xAxis = d3.axisTop();
+    xAxis.scale(goalScale);
+
+
+    d3.select('#goalHeader')
+        .append('svg')
+        .attr('height', cellHeight)
+        .attr('width', 2 * cellWidth)
+        .append('g')
+        .attr('transform','translate(' + 0 + ',' + (cellHeight - 2) + ')')
+        .call(xAxis);
+
+    //populating teams
+    tableElements = teamData;
 // ******* TODO: PART V *******
 
 }
@@ -105,9 +126,149 @@ function createTable() {
 function updateTable() {
 
 // ******* TODO: PART III *******
+    var array = [];
+    var tr = d3.select('tbody')
+        .selectAll('tr')
+        .data(tableElements);
 
-};
+    var td = tr.enter()
+        .append('tr')
+        .selectAll('td')
+        .data(function (d) {
 
+            array = [
+                {value: d.key, vis: 'text', type: d.type },
+                {value: [d.value['Goals Conceded'], d.value['Goals Made']], vis: 'goals', type: d.type },
+                {value: d.value.Result['label'], vis: 'text', type: d.type },
+                {value: d.value['Wins'], vis: 'bars', type: d.type },
+                {value: d.value['Losses'], vis: 'bars', type: d.type },
+                {value: d.value['TotalGames'], vis: 'bars', type: d.type }
+            ];
+
+            return array;
+        })
+        .enter()
+        .append('td');
+
+    // creating bar charts
+    var newTdForBarChart = td.filter(function (d) {
+
+            return d.vis == 'bars';
+        });
+
+    var xScale = d3.scaleLinear()
+        .domain([0,d3.max(newTdForBarChart.data(),function(d){
+
+            return d.value;
+        })])
+        .range([0,cellWidth]);
+
+    var colorScale = d3.scaleLinear()
+        .domain([0,d3.max(newTdForBarChart.data(),function(d){
+
+            return d.value;
+        })])
+        .range(['lightgrey','teal']);
+
+    newTdForBarChart.append('svg')
+        .attr('height', cellHeight)
+        .attr('width', cellWidth)
+        .style('float', 'left')
+        .attr('transform', 'translate(' + cellHeight + ', 0) rotate(-90)')
+        .append('rect')
+        .attr('x', 0)
+        .attr('y', 5)
+        .attr('height', barHeight)
+        .attr('width', function (d) {
+            //console.log(d);
+            return xScale(d.value);
+        })
+        .style('opacity', 1)
+        .style('fill', function(d) {
+            return colorScale(d.value);
+        });
+
+
+    //creating teams and round/result
+    td.filter(function (d) {
+        return d.vis == 'text';
+        })
+        .text(function (d) {
+            return d.value;
+        });
+
+    //goal chart
+    var newTdForGoalsChart = td.filter(function (d) {
+        //console.log(d)
+        return d.vis == 'goals';
+    });
+
+    newTdForGoalsChart.append('svg')
+        .attr('height', cellHeight )
+        .attr('width', 2 * cellWidth)
+        .attr('transform','translate(' + 0 + ',' + (cellHeight - 2) + ')')
+        .style('float', 'left')
+        .append('g')
+        .append('rect')
+        .classed('goalBar', true)
+        .attr('y', cellHeight/2 - 5)
+        .attr('x', function(d){
+
+            if(d.value[1] < d.value[0])
+                return goalScale(d.value[1]);
+            return goalScale(d.value[0]);
+        })
+        .attr('width', function(d){
+
+            if(goalScale(d.value[1]) - goalScale(d.value[0]) < 0)
+                return goalScale(d.value[0]) - goalScale(d.value[1]);
+            return goalScale(d.value[1]) - goalScale(d.value[0]);
+        })
+        .attr('height', 10)
+        //.style('opacity', 0.6)
+        .style('fill', function(d) {
+
+            if(goalScale(d.value[1]) - goalScale(d.value[0]) < 0)
+                return '#A80000';
+            else if(goalScale(d.value[1]) - goalScale(d.value[0]) > 0)
+                return '#0D4F8B';
+            else
+                return 'grey';
+            //return ;
+        });
+
+    newTdForGoalsChart.selectAll('g')
+        .append('circle')
+        .classed('goalCircle', true)
+        .attr('cy', cellHeight/2)
+        .attr('cx', function(d){
+            return goalScale(d.value[0]);
+        })
+        //.style('opacity', 1)
+        .style('fill', function(d) {
+
+            if(d.value[0] == d.value[1])
+                return 'grey';
+            return '#A80000';
+        })
+
+    newTdForGoalsChart.selectAll('g')
+        .append('circle')
+        .classed('goalCircle', true)
+        .attr('cy', cellHeight/2)
+        .attr('cx', function(d){
+            return goalScale(d.value[1]);
+        })
+        //.style('opacity', 1)
+        .style('fill', function(d) {
+            if(d.value[0] == d.value[1])
+                return 'grey';
+            return '#0D4F8B';
+        });
+
+
+
+}
 
 /**
  * Collapses all expanded countries, leaving only rows for aggregate values per country.
@@ -139,6 +300,48 @@ function updateList(i) {
 function createTree(treeData) {
 
     // ******* TODO: PART VI *******
+
+    //console.log(treeData);
+
+    var root = d3.stratify()
+                    .id(function(d) {
+                        return d.id;
+                    })
+                    .parentId(function(d){
+                        return d.ParentGame;
+                    });
+
+    var tree = d3.tree()
+                    .size(500, 900);
+
+    var svg = d3.select('#tree');
+
+    var g = svg.append('g');
+
+    var nodes = tree(root);
+
+    var link = g.selectAll('.link')
+                .data(nodes.descendants().slice(1))
+                .enter()
+                .append('path')
+                .attr('class','link')
+                .attr("d", function(d) {
+                    return "M" + d.y + "," + d.x
+                            + "C" + (d.y + d.parent.y) / 2 + "," + d.x
+                            + " " + (d.y + d.parent.y) / 2 + "," + d.parent.x
+                            + " " + d.parent.y + "," + d.parent.x;
+                });
+
+    var node = g.selectAll('.node')
+                .data(nodes.descendants())
+        .enter()
+        .append('path')
+        .attr("d", d3.symbol()
+            .size(function(d) { return d.data.value * 30; } )
+            .type(function(d) { if
+            (d.data.value >= 9) { return d3.symbolCross; } else if
+            (d.data.value <= 9) { return d3.symbolDiamond;}
+            }));
 
 
 };

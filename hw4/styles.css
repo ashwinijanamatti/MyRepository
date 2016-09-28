@@ -12,17 +12,16 @@ th {
     min-width: 125px;
 }
 
+line {
+
+    stroke: #567;
+}
 thead td , th{
     cursor: s-resize;
 }
 
 tbody tr:first-child td {
     padding-top: 2px;
-}
-
-tbody th{
-    cursor:pointer;
-    font-weight: bold;
 }
 
 .aggregate{
@@ -33,11 +32,24 @@ tbody th{
     color: #b1b1b1;
 }
 
-tbody td {
+tbody tr{
+    color: #317f19;
+    font-weight: bold;
+    text-align: right;
+
+}
+
+tbody tr td:first-child {
     padding-right: 5px;
-    padding-left: 5px;
+    color:#317f19;
+    cursor:pointer;
+    font-weight: bold;
+}
+
+tbody td{
+
     border-left: solid 1px #000;
-    color:black
+    white-space: nowrap;
 }
 
 tbody tr:hover {
@@ -102,8 +114,10 @@ header {
     height: 100px;
 }
 
+
 .goalBar{
     opacity:0.6;
+
 }
 
 .goalCircle{
@@ -150,6 +164,16 @@ header {
     width: 650px;
     padding: 0.5em;
     float: left;
+    background-color: inherit;
 }
 
+/*.container {
+
+    background-color: yellow;
+    box-shadow: 2px 2px 5px grey;
+}*/
+
+/*body{
+    background-color: #B93B8F;
+}*/
 
