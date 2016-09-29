@@ -339,9 +339,11 @@ function createTree(treeData) {
         .attr("d", d3.symbol()
             .size(function(d) { return d.data.value * 30; } )
             .type(function(d) { if
-            (d.data.value >= 9) { return d3.symbolCross; } else if
-            (d.data.value <= 9) { return d3.symbolDiamond;}
+            (d.data.value >= 9) { return d3.key; } else if
+            (d.data.value <= 9) { return d3.id;}
             }));
+
+
 
 
 };
