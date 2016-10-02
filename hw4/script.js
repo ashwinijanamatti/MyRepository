@@ -54,7 +54,9 @@ var column_index = {
     4: 'Losses',
     5: 'TotalGames'
 
-}
+};
+
+var sort = false;
 
 
 
@@ -133,103 +135,89 @@ function createTable() {
         .on('click', function(e,i){
 
 
+
            collapseList();
 
-           console.log('before = ' + tableElements.length);
+           //console.log('before = ' + tableElements.length);
 
-           tableElements =
-               tableElements
-               .filter(function(d) {
+            //if(sort == false) {
+                tableElements =
+                    tableElements
+                        .filter(function (d) {
 
-                    return d.value.type == 'aggregate';
-                })
-               .sort(function(a,b){
-
-
-                   if(i == 0) {
-
-                       if (a[column_index[i]] > b[column_index[i]])
-                           return -1;
-                       else if (a[column_index[i]] < b[column_index[i]])
-                           return 1;
-                       else
-                           return 0;
-                   }
-                   else if(i == 2) {
-
-                       if (a.value.Result[column_index[i]] > b.value.Result[column_index[i]])
-                           return -1;
-                       else if (a.value.Result[column_index[i]] < b.value.Result[column_index[i]])
-                           return 1;
-                       else
-                           return 0;
+                            return d.value.type == 'aggregate';
+                        })
+                        .sort(function (a, b) {
 
 
-                   }
-                   else {
+                            if(sort == false) {
+                                if (i == 0) {
 
-                       return b.value[column_index[i]] - a.value[column_index[i]];
-                   }
+                                    if (a[column_index[i]] > b[column_index[i]])
+                                        return -1;
+                                    else if (a[column_index[i]] < b[column_index[i]])
+                                        return 1;
+                                    else
+                                        return 0;
+                                }
+                                else if (i == 2) {
+
+                                    if (a.value.Result[column_index[i]] > b.value.Result[column_index[i]])
+                                        return -1;
+                                    else if (a.value.Result[column_index[i]] < b.value.Result[column_index[i]])
+                                        return 1;
+                                    else
+                                        return 0;
 
 
-                });
+                                }
+                                else {
 
-           console.log('after click = ' + tableElements.length);
+                                    return b.value[column_index[i]] - a.value[column_index[i]];
+                                }
+                            }
+                            else {
+
+                                if (i == 0) {
+
+                                    if (a[column_index[i]] < b[column_index[i]])
+                                        return -1;
+                                    else if (a[column_index[i]] > b[column_index[i]])
+                                        return 1;
+                                    else
+                                        return 0;
+                                }
+                                else if (i == 2) {
+
+                                    if (a.value.Result[column_index[i]] < b.value.Result[column_index[i]])
+                                        return -1;
+                                    else if (a.value.Result[column_index[i]] > b.value.Result[column_index[i]])
+                                        return 1;
+                                    else
+                                        return 0;
+
+
+                                }
+                                else {
+
+                                    return a.value[column_index[i]] - b.value[column_index[i]];
+                                }
+                            }
+
+                        });
+           
+            if(sort == false)
+                sort = true;
+            else
+                sort = false;
+
+           //console.log('after click = ' + tableElements.length);
 
            updateTable();
 
        });
 
-    d3.selectAll('thead>tr:first-child>*')
-        .on('dblclick', function(e,i){
 
-
-            collapseList();
-
-            console.log('before doubleclick = ' + tableElements.length);
-
-            tableElements =
-                tableElements
-                    .filter(function(d) {
-
-                        return d.value.type == 'aggregate';
-                    })
-                    .sort(function(a,b){
-
-
-                        if(i == 0) {
-
-                            if (a[column_index[i]] < b[column_index[i]])
-                                return -1;
-                            else if (a[column_index[i]] > b[column_index[i]])
-                                return 1;
-                            else
-                                return 0;
-                        }
-                        else if(i == 2) {
-
-                            if (a.value.Result[column_index[i]] < b.value.Result[column_index[i]])
-                                return -1;
-                            else if (a.value.Result[column_index[i]] > b.value.Result[column_index[i]])
-                                return 1;
-                            else
-                                return 0;
-
-                            // return d3.descending(a.value.Result[column_index[i]], a.value.Result[column_index[i]]);
-                        }
-                        else {
-
-                            return a.value[column_index[i]] - b.value[column_index[i]];
-                        }
-
-
-                    });
-
-            console.log('after doubleclick = ' + tableElements.length);
-
-            updateTable();
-
-        });
 }
 
 /**
@@ -243,13 +231,16 @@ function updateTable() {
     var tr = d3.select('tbody')
         .selectAll('tr')
         .data(tableElements);
+
     tr.exit().remove();
+
     tr = tr.enter()
         .append('tr')
         .merge(tr)
-        .on('mouseover', function(e,i){
+        .on('mouseover', function(e){
 
-            updateTree(i);
+
+            updateTree(e);
         })
         .on('mouseout', function(e,i) {
 
@@ -266,6 +257,7 @@ function updateTable() {
         .data(function (d) {
 
 
+            if(d.value.type == 'aggregate') {
                 array = [
                     {value: d.key, vis: 'text', type: d.value.type, isName: true},
                     {value: [d.value['Goals Conceded'], d.value['Goals Made']], vis: 'goals', type: d.value.type},
@@ -274,67 +266,120 @@ function updateTable() {
                     {value: d.value['Losses'], vis: 'bars', type: d.value.type},
                     {value: d.value['TotalGames'], vis: 'bars', type: d.value.type}
                 ];
+            }
+            else
+            {
+                array = [
+                    {value: d.key, vis: 'text', type: d.value.type, isName: true},
+                    {value: [d.value['Goals Conceded'], d.value['Goals Made']], vis: 'goals', type: d.value.type},
+                    {value: d.value.Result['label'], vis: 'text', type: d.value.type},
+                    {value: 0, vis: 'bars', type: d.value.type},
+                    {value: 0, vis: 'bars', type: d.value.type},
+                    {value: 0, vis: 'bars', type: d.value.type}
+                ];
+
+
+            }
+           // console.log(array);
 
             return array;
         });
 
     td.exit().remove();
 
-    td = td.enter()
-        .append('td')
-        .merge(td);
+    var tdEnter = td.enter()
+        .append('td');
+
+
+    var svgEnter = tdEnter.filter(function(d) {
+                        return d.vis != 'text';
+                    }).append('svg');
+
+    td = tdEnter.merge(td);
+
+    var svg = td.select('svg')
+        .attr('width', function(d){
+
+            if(d.vis == 'bars')
+                return cellWidth;
+            else
+                return 2 * cellWidth;
+        })
+        .attr('height', cellHeight)
+        .attr('transform', function(d) {
+
+            if(d.vis == 'goals')
+                return 'translate ( 0 , ' + cellHeight/2 + ')';
+            else
+                return 'translate (0,0)';
+        });
 
 
 
 
     // creating bar charts
-    var newTdForBarChart = td.filter(function (d) {
+    var newTdForBarChartEnter = svgEnter.filter(function (d) {
 
                                     return d.vis == 'bars' ;
                                 });
 
+    newTdForBarChartEnter .append('rect').attr('id','rect1');
+    newTdForBarChartEnter .append('text').attr('id','text1');
+
+
+    var newTdForBarChartSelection =  svg.select('#rect1');
+
+    console.log(newTdForBarChartSelection.data().length);
+    console.log(newTdForBarChartEnter.data().length);
 
     var xScale = d3.scaleLinear()
-        .domain([0,d3.max(newTdForBarChart.data(),function(d){
+        .domain([0,d3.max(newTdForBarChartSelection.data(),function(d){
 
             return d.value;
         })])
         .range([0,cellWidth]);
 
     var colorScale = d3.scaleLinear()
-        .domain([0,d3.max(newTdForBarChart.data(),function(d){
+        .domain([0,d3.max(newTdForBarChartSelection.data(),function(d){
 
             return d.value;
         })])
-        .range(['light grey','teal']);
+        .range(['lightgrey','teal']);
 
-    newTdForBarChart.append('svg');
 
-    newTdForBarChart.selectAll('svg').remove();
-
-    newTdForBarChart.append('svg');
-
-    newTdForBarChart.select('svg')
-        .attr('height', cellHeight)
-        .attr('width', cellWidth)
-        .style('float', 'left')
-        .attr('transform', 'translate(' + cellHeight + ', 0) rotate(-90)')
-        .append('rect')
+    newTdForBarChartSelection//.select('rect')
         .attr('x', 0)
         .attr('y', 5)
         .attr('height', barHeight)
         .attr('width', function (d) {
-            //console.log(d);
-            if(d.type == 'aggregate')
-                return xScale(d.value);
-        })
-        .text(function(d){
 
-            return d.value;
+                return xScale(d.value);
+
         })
         .style('fill', function(d) {
-            return colorScale(d.value);
+
+              return colorScale(d.value);
+
         });
+
+
+    newTdForBarChartSelection = svg.select('#text1');
+       newTdForBarChartSelection//.select('text')
+        .text(function(d){
+
+            if(d.type == 'aggregate')
+                return d.value;
+        })
+        .style('fill', 'white')
+        .attr('x', function(d){
+
+            if(d.type == 'aggregate')
+                return xScale(d.value) - 10;
+            else
+                return 0;
+        })
+        .attr('y', barHeight - 1)
+        ;
 
     //creating teams and round/result
     td.filter(function (d) {
@@ -355,24 +400,26 @@ function updateTable() {
         });
 
     //goal chart
-    var newTdForGoalsChart = td.filter(function (d) {
+    var newTdForGoalsChartEnter = svgEnter.filter(function (d) {
 
         return d.vis == 'goals';
+    })
+        .append('g')
+        ;
+    newTdForGoalsChartEnter.append('rect');
+    newTdForGoalsChartEnter.append('circle').attr('id', function(d){
+        return 'goalsmade0';
+    });
+    newTdForGoalsChartEnter.append('circle').attr('id', function(d){
+        return 'goalsconceded1';
     });
 
-    newTdForGoalsChart.append('svg');
 
-    newTdForGoalsChart.selectAll('svg').remove();
+    var newTdForGoalsChartSelect = svg.select('g');
 
-    newTdForGoalsChart.append('svg');
 
-    newTdForGoalsChart.select('svg')
-        .attr('height', cellHeight )
-        .attr('width', 2 * cellWidth)
-        .attr('transform','translate(' + 0 + ',' + (cellHeight - 2) + ')')
-        .style('float', 'left')
-        .append('g')
-        .append('rect')
+    newTdForGoalsChartSelect
+        .select('rect')
         .classed('goalBar', true)
         .attr('y', function(d){
             if(d.type == 'aggregate')
@@ -415,8 +462,8 @@ function updateTable() {
 
 
 
-    newTdForGoalsChart.select('g')
-        .append('circle')
+    newTdForGoalsChartSelect
+        .select('#goalsmade0')
         .classed('goalCircle', true)
         .attr('cy', cellHeight/2)
         .attr('cx', function(d){
@@ -438,8 +485,10 @@ function updateTable() {
             return '#fff';
         });
 
-    newTdForGoalsChart.select('g')
-        .append('circle')
+
+
+    newTdForGoalsChartSelect
+        .select('#goalsconceded1')
         .classed('goalCircle', true)
         .attr('cy', cellHeight/2)
         .attr('cx', function(d){
@@ -526,6 +575,7 @@ function updateList(i) {
 
 
         tableElements = startArray.concat(gamesToAppend, endArray);
+        //console.log(tableElements);
 
     }
     else if(tableElements[i+1].value.type == 'game'){
@@ -547,6 +597,7 @@ function updateList(i) {
 
            var newArray = tableElements.slice(0, start);
             tableElements = newArray.concat(tableElements.slice(end + 1));
+        //console.log(tableElements);
 
     }
 
@@ -592,7 +643,6 @@ function createTree(treeData) {
 
    nodes = tree(nodes);
 
-    console.log(nodes);
 
     var svg = d3.select('#tree')
         .attr("width", width + margin.left + margin.right)
@@ -663,17 +713,43 @@ function updateTree(row) {
 
     // ******* TODO: PART VII *******
 
-    //console.log('im in');
-    console.log(tableElements[row].key);
 
-    if(tableElements[row].value.type == 'aggregate'){
 
-        d3.selectAll('.node');
+
+    if(row.value.type == 'aggregate'){
+
+        d3.selectAll('.node')
+            .filter(function(d) {
+
+                //console.log(d);
+                return d.data.data.Team == row.key;
+            })
+            .classed('selectedLabel',true);
+        var d = d3.selectAll('.link')
+                    .filter(function(d){
+
+                        return d.data.data.Team == row.key && d.data.data.Wins == 1;
+                    })
+                .classed('selected',true);
 
     }
     else {
 
 
+        d3.selectAll('.node')
+            .filter(function(d) {
+
+
+                return (d.data.data.Team == row.key && d.data.data.Opponent == row.value.Opponent) || (d.data.data.Team == row.value.Opponent && d.data.data.Opponent == row.key);
+            })
+            .classed('selectedLabel',true);
+
+        d3.selectAll('.link')
+            .filter(function(d){
+
+                return (d.data.data.Team == row.key && d.data.data.Opponent == row.value.Opponent) || (d.data.data.Team == row.value.Opponent && d.data.data.Opponent == row.key);
+            })
+            .classed('selected',true);
 
     }
 
@@ -686,7 +762,14 @@ function clearTree() {
 
     // ******* TODO: PART VII *******
 
-    //console.log('clear');
+    //if()
+
+    d3.selectAll('.selectedLabel')
+                .classed('selectedLabel',false);
+
+    d3.selectAll('.selected')
+                .classed('selected',false);
+
 
 }
 
