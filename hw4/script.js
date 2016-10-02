@@ -45,6 +45,17 @@ var rank = {
     'Group': 0
 };
 
+var column_index = {
+
+    0: 'key',
+    1: 'Delta Goals',
+    2: 'label',
+    3: 'Wins',
+    4: 'Losses',
+    5: 'TotalGames'
+
+}
+
 
 
 //For the HACKER version, comment out this call to d3.json and implement the commented out
@@ -115,8 +126,110 @@ function createTable() {
 
     //populating teams
     tableElements = teamData;
+
 // ******* TODO: PART V *******
 
+   d3.selectAll('thead>tr:first-child>*')
+        .on('click', function(e,i){
+
+
+           collapseList();
+
+           console.log('before = ' + tableElements.length);
+
+           tableElements =
+               tableElements
+               .filter(function(d) {
+
+                    return d.value.type == 'aggregate';
+                })
+               .sort(function(a,b){
+
+
+                   if(i == 0) {
+
+                       if (a[column_index[i]] > b[column_index[i]])
+                           return -1;
+                       else if (a[column_index[i]] < b[column_index[i]])
+                           return 1;
+                       else
+                           return 0;
+                   }
+                   else if(i == 2) {
+
+                       if (a.value.Result[column_index[i]] > b.value.Result[column_index[i]])
+                           return -1;
+                       else if (a.value.Result[column_index[i]] < b.value.Result[column_index[i]])
+                           return 1;
+                       else
+                           return 0;
+
+
+                   }
+                   else {
+
+                       return b.value[column_index[i]] - a.value[column_index[i]];
+                   }
+
+
+                });
+
+           console.log('after click = ' + tableElements.length);
+
+           updateTable();
+
+       });
+
+    d3.selectAll('thead>tr:first-child>*')
+        .on('dblclick', function(e,i){
+
+
+            collapseList();
+
+            console.log('before doubleclick = ' + tableElements.length);
+
+            tableElements =
+                tableElements
+                    .filter(function(d) {
+
+                        return d.value.type == 'aggregate';
+                    })
+                    .sort(function(a,b){
+
+
+                        if(i == 0) {
+
+                            if (a[column_index[i]] < b[column_index[i]])
+                                return -1;
+                            else if (a[column_index[i]] > b[column_index[i]])
+                                return 1;
+                            else
+                                return 0;
+                        }
+                        else if(i == 2) {
+
+                            if (a.value.Result[column_index[i]] < b.value.Result[column_index[i]])
+                                return -1;
+                            else if (a.value.Result[column_index[i]] > b.value.Result[column_index[i]])
+                                return 1;
+                            else
+                                return 0;
+
+                            // return d3.descending(a.value.Result[column_index[i]], a.value.Result[column_index[i]]);
+                        }
+                        else {
+
+                            return a.value[column_index[i]] - b.value[column_index[i]];
+                        }
+
+
+                    });
+
+            console.log('after doubleclick = ' + tableElements.length);
+
+            updateTable();
+
+        });
 }
 
 /**
@@ -130,31 +243,56 @@ function updateTable() {
     var tr = d3.select('tbody')
         .selectAll('tr')
         .data(tableElements);
-
-    var td = tr.enter()
+    tr.exit().remove();
+    tr = tr.enter()
         .append('tr')
-        .selectAll('td')
+        .merge(tr)
+        .on('mouseover', function(e,i){
+
+            updateTree(i);
+        })
+        .on('mouseout', function(e,i) {
+
+            clearTree();
+        })
+        .on('click', function(d, i){
+
+            if(tableElements[i].value.type == 'aggregate')
+                updateList(i);
+
+        });
+
+    var td = tr.selectAll('td')
         .data(function (d) {
 
-            array = [
-                {value: d.key, vis: 'text', type: d.type },
-                {value: [d.value['Goals Conceded'], d.value['Goals Made']], vis: 'goals', type: d.type },
-                {value: d.value.Result['label'], vis: 'text', type: d.type },
-                {value: d.value['Wins'], vis: 'bars', type: d.type },
-                {value: d.value['Losses'], vis: 'bars', type: d.type },
-                {value: d.value['TotalGames'], vis: 'bars', type: d.type }
-            ];
+
+                array = [
+                    {value: d.key, vis: 'text', type: d.value.type, isName: true},
+                    {value: [d.value['Goals Conceded'], d.value['Goals Made']], vis: 'goals', type: d.value.type},
+                    {value: d.value.Result['label'], vis: 'text', type: d.value.type},
+                    {value: d.value['Wins'], vis: 'bars', type: d.value.type},
+                    {value: d.value['Losses'], vis: 'bars', type: d.value.type},
+                    {value: d.value['TotalGames'], vis: 'bars', type: d.value.type}
+                ];
 
             return array;
-        })
-        .enter()
-        .append('td');
+        });
+
+    td.exit().remove();
+
+    td = td.enter()
+        .append('td')
+        .merge(td);
+
+
+
 
     // creating bar charts
     var newTdForBarChart = td.filter(function (d) {
 
-            return d.vis == 'bars';
-        });
+                                    return d.vis == 'bars' ;
+                                });
+
 
     var xScale = d3.scaleLinear()
         .domain([0,d3.max(newTdForBarChart.data(),function(d){
@@ -168,9 +306,15 @@ function updateTable() {
 
             return d.value;
         })])
-        .range(['lightgrey','teal']);
+        .range(['light grey','teal']);
 
-    newTdForBarChart.append('svg')
+    newTdForBarChart.append('svg');
+
+    newTdForBarChart.selectAll('svg').remove();
+
+    newTdForBarChart.append('svg');
+
+    newTdForBarChart.select('svg')
         .attr('height', cellHeight)
         .attr('width', cellWidth)
         .style('float', 'left')
@@ -181,29 +325,48 @@ function updateTable() {
         .attr('height', barHeight)
         .attr('width', function (d) {
             //console.log(d);
-            return xScale(d.value);
+            if(d.type == 'aggregate')
+                return xScale(d.value);
         })
-        .style('opacity', 1)
+        .text(function(d){
+
+            return d.value;
+        })
         .style('fill', function(d) {
             return colorScale(d.value);
         });
-
 
     //creating teams and round/result
     td.filter(function (d) {
         return d.vis == 'text';
         })
         .text(function (d) {
+
+            if(d.type == 'game' && d.isName)
+                return 'x'+d.value;
+
             return d.value;
+        })
+        .style('color', function(d){
+
+            if(d.type == 'game' && d.isName)
+                return 'grey';
+
         });
 
     //goal chart
     var newTdForGoalsChart = td.filter(function (d) {
-        //console.log(d)
+
         return d.vis == 'goals';
     });
 
-    newTdForGoalsChart.append('svg')
+    newTdForGoalsChart.append('svg');
+
+    newTdForGoalsChart.selectAll('svg').remove();
+
+    newTdForGoalsChart.append('svg');
+
+    newTdForGoalsChart.select('svg')
         .attr('height', cellHeight )
         .attr('width', 2 * cellWidth)
         .attr('transform','translate(' + 0 + ',' + (cellHeight - 2) + ')')
@@ -211,7 +374,12 @@ function updateTable() {
         .append('g')
         .append('rect')
         .classed('goalBar', true)
-        .attr('y', cellHeight/2 - 5)
+        .attr('y', function(d){
+            if(d.type == 'aggregate')
+                return cellHeight/2 - 6;
+            else
+                return cellHeight/2;
+        })
         .attr('x', function(d){
 
             if(d.value[1] < d.value[0])
@@ -220,52 +388,78 @@ function updateTable() {
         })
         .attr('width', function(d){
 
-            if(goalScale(d.value[1]) - goalScale(d.value[0]) < 0)
-                return goalScale(d.value[0]) - goalScale(d.value[1]);
-            return goalScale(d.value[1]) - goalScale(d.value[0]);
+
+                if (goalScale(d.value[1]) - goalScale(d.value[0]) < 0)
+                    return goalScale(d.value[0]) - goalScale(d.value[1]);
+                return goalScale(d.value[1]) - goalScale(d.value[0]);
+
         })
-        .attr('height', 10)
+        .attr('height', function(d) {
+
+            if(d.type == 'aggregate')
+                return 12;
+            else
+                return 2;
+        })
         //.style('opacity', 0.6)
         .style('fill', function(d) {
 
-            if(goalScale(d.value[1]) - goalScale(d.value[0]) < 0)
-                return '#A80000';
-            else if(goalScale(d.value[1]) - goalScale(d.value[0]) > 0)
-                return '#0D4F8B';
-            else
-                return 'grey';
-            //return ;
+             if (goalScale(d.value[1]) - goalScale(d.value[0]) < 0)
+                    return '#A80000';
+                else if (goalScale(d.value[1]) - goalScale(d.value[0]) > 0)
+                    return '#0D4F8B';
+                else
+                    return 'grey';
+
         });
 
-    newTdForGoalsChart.selectAll('g')
+
+
+    newTdForGoalsChart.select('g')
         .append('circle')
         .classed('goalCircle', true)
         .attr('cy', cellHeight/2)
         .attr('cx', function(d){
             return goalScale(d.value[0]);
         })
-        //.style('opacity', 1)
-        .style('fill', function(d) {
+        .style('stroke', function(d){
 
             if(d.value[0] == d.value[1])
                 return 'grey';
             return '#A80000';
         })
+        .style('fill', function(d) {
 
-    newTdForGoalsChart.selectAll('g')
+            if(d.type == 'aggregate') {
+                if (d.value[0] == d.value[1])
+                    return 'grey';
+                return '#A80000';
+            }
+            return '#fff';
+        });
+
+    newTdForGoalsChart.select('g')
         .append('circle')
         .classed('goalCircle', true)
         .attr('cy', cellHeight/2)
         .attr('cx', function(d){
             return goalScale(d.value[1]);
         })
-        //.style('opacity', 1)
-        .style('fill', function(d) {
+        .style('stroke', function(d){
+
             if(d.value[0] == d.value[1])
                 return 'grey';
             return '#0D4F8B';
-        });
+        })
+        .style('fill', function(d) {
 
+            if(d.type == 'aggregate') {
+                if(d.value[0] == d.value[1])
+                    return 'grey';
+                return '#0D4F8B';
+            }
+            return '#fff';
+        });
 
 
 }
@@ -277,6 +471,30 @@ function updateTable() {
 function collapseList() {
 
     // ******* TODO: PART IV *******
+
+    var start = 0;
+    var end = 0;
+    var count = 0;
+    //var newArray = [];
+    for(var j=0;j<tableElements.length;j++){
+
+        if(tableElements[j].value.type == 'game') {
+
+            if(count == 0){
+                start = j;
+            }
+
+            count++;
+            end = j;
+        }
+    }
+
+    if(count != 0) {
+
+        var newArray = tableElements.slice(0, start);
+        tableElements = newArray.concat(tableElements.slice(end + 1));
+        updateTable();
+    }
 
 
 }
@@ -290,6 +508,51 @@ function updateList(i) {
     // ******* TODO: PART IV *******
 
 
+    if(i == tableElements.length-1) {
+
+        var gamesToAppend = tableElements[i].value.games;
+
+
+        tableElements = tableElements.concat(gamesToAppend);
+
+
+    }
+
+    else if(tableElements[i+1].value.type == 'aggregate') {
+        var gamesToAppend = tableElements[i].value.games;
+        var startArray = tableElements.slice(0, i + 1);
+
+        var endArray = tableElements.slice(i + 1);
+
+
+        tableElements = startArray.concat(gamesToAppend, endArray);
+
+    }
+    else if(tableElements[i+1].value.type == 'game'){
+
+        var start = i+1;
+        var end = 0;
+        var count = 0;
+
+        for(var j=i+1;j<tableElements.length;j++){
+
+
+            if(tableElements[j].value.type == 'aggregate') {
+
+                break;
+            }
+            count++;
+            end = j;
+        }
+
+           var newArray = tableElements.slice(0, start);
+            tableElements = newArray.concat(tableElements.slice(end + 1));
+
+    }
+
+    updateTable();
+
+
 }
 
 /**
@@ -301,24 +564,43 @@ function createTree(treeData) {
 
     // ******* TODO: PART VI *******
 
-    //console.log(treeData);
+    var margin = {top: 20, right: 110, bottom: 30, left: 90},
+        width = 700 - margin.left - margin.right,
+        height = 900 - margin.top - margin.bottom;
 
     var root = d3.stratify()
                     .id(function(d) {
-                        return d.id;
+
+                        var id = d.id.search(/[0-9]/);
+
+
+                        return d.id.substr(id);
                     })
                     .parentId(function(d){
+
+
                         return d.ParentGame;
-                    });
+                    })(treeData);
 
     var tree = d3.tree()
-                    .size(500, 900);
+                    .size([height, width]);
 
-    var svg = d3.select('#tree');
+    var nodes = d3.hierarchy(root, function(d) {
 
-    var g = svg.append('g');
+        return d.children;
+    });
 
-    var nodes = tree(root);
+   nodes = tree(nodes);
+
+    console.log(nodes);
+
+    var svg = d3.select('#tree')
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom);
+
+    var g = svg.append('g')
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
 
     var link = g.selectAll('.link')
                 .data(nodes.descendants().slice(1))
@@ -335,18 +617,41 @@ function createTree(treeData) {
     var node = g.selectAll('.node')
                 .data(nodes.descendants())
         .enter()
-        .append('path')
-        .attr("d", d3.symbol()
-            .size(function(d) { return d.data.value * 30; } )
-            .type(function(d) { if
-            (d.data.value >= 9) { return d3.key; } else if
-            (d.data.value <= 9) { return d3.id;}
-            }));
+        .append("g")
+        .attr("class", function(d){
+
+            var classname = 'node';
+            if(d.data.data.Wins == 1)
+                classname += ' winner';
+            return classname;
+
+        })
+        .attr("transform", function(d) {
+            return "translate(" + d.y + "," + d.x + ")"; })
+
+        ;
+
+
+    node.append('circle')
+        .attr('r', 6);
+
+
+    node.append("text")
+        .attr("dy", ".35em")
+        .attr("x", function(d) { return d.children ?
+        (d.data.height + 10) * -1 : d.data.height + 10 })
+        .style("text-anchor", function(d) {
+
+            if(d.data.depth != 4)
+                return 'end';
+            else
+            return 'start';
+        })
+        .text(function(d) { return d.data.data.Team; });
 
 
 
-
-};
+}
 
 /**
  * Updates the highlighting in the tree based on the selected team.
@@ -358,6 +663,19 @@ function updateTree(row) {
 
     // ******* TODO: PART VII *******
 
+    //console.log('im in');
+    console.log(tableElements[row].key);
+
+    if(tableElements[row].value.type == 'aggregate'){
+
+        d3.selectAll('.node');
+
+    }
+    else {
+
+
+
+    }
 
 }
 
@@ -367,7 +685,8 @@ function updateTree(row) {
 function clearTree() {
 
     // ******* TODO: PART VII *******
-    
+
+    //console.log('clear');
 
 }
 
