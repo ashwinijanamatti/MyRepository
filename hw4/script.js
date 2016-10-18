@@ -205,7 +205,7 @@ function createTable() {
                             }
 
                         });
-           
+
             if(sort == false)
                 sort = true;
             else
