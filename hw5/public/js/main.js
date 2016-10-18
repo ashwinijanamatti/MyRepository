@@ -43,7 +43,7 @@
      * @returns {Main singleton class |*}
      */
     Main.getInstance = function(){
-        var self = this
+        var self = this;
         if(self.instance == null){
             self.instance = new Main();
 

@@ -20,6 +20,22 @@ h1 {
     stroke-width: 4;
 }
 
+.path{
+
+    stroke: #D3D3D3;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-dasharray: 4,4;
+}
+
+.yeartext1{
+    text-anchor:middle;
+    font-size: 10px;
+    fill: #565656;
+    stroke-width: 0.1px;
+    /*stroke: #e5e5e5;*/
+}
+
 .yeartext, .tilestext, .brushtext{
     text-anchor:middle;
     font-size: 24px;

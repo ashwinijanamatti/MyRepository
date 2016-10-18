@@ -54,7 +54,7 @@ YearChart.prototype.chooseClass = function (party) {
     else if (party == "I") {
         return "yearChart independent";
     }
-}
+};
 
 
 /**
@@ -73,6 +73,11 @@ YearChart.prototype.update = function(){
     self.colorScale = d3.scaleQuantile()
         .domain(domain).range(range);
 
+
+    self.xscale =  d3.scaleLinear()
+        .domain([0,self.electionWinners.length])
+        .range([self.margin.left, self.svgWidth]);
+
     // ******* TODO: PART I *******
 
     // Create the chart by adding circle elements representing each election year
@@ -80,8 +85,81 @@ YearChart.prototype.update = function(){
     //HINT: Use the .yearChart class to style your circle elements
     //HINT: Use the chooseClass method to choose the color corresponding to the winning party.
 
+
+    var lineGenerator = d3.line()
+        .x(function (d) {
+            return d;
+        })
+        .y(function (d) {
+            return self.svgHeight/2;
+        });
+
+
+    var createLine = d3.select('#year-chart')
+        .select('svg')
+        .append('path')
+        .datum([0,self.svgWidth]);
+
+    createLine.attr('d', lineGenerator)
+        .attr('class','path');
+
+    var circleEnterSelection = d3.select('#year-chart')
+        .select('svg')
+        .selectAll('g')
+        .data(self.electionWinners);
+
+
+    circleEnterSelection.exit().remove();
+
+    circleEnterSelection = circleEnterSelection
+        .enter()
+        .append('g')
+        .merge(circleEnterSelection);
+
+
+
+    circleEnterSelection.append('circle')
+        .attr('class', function(d){
+
+            return self.chooseClass(d.PARTY);
+        })
+        .attr('r',15)
+        .attr('cx', function(d,i){
+
+            return self.xscale(i);
+        })
+        .attr('cy', self.svgHeight/2)
+        .on('click', function(d){
+
+            d3.select('.highlighted').classed('highlighted',false);
+            this.setAttribute('class','highlighted');
+
+            //console.log(d);
+
+            d3.csv("data/Year_Timeline_"+d.YEAR+".csv",function(error,dataSelection){
+
+                self.electoralVoteChart.update();
+            })
+
+        });
+
+
+
+
     //Append text information of each year right below the corresponding circle
     //HINT: Use .yeartext class to style your text elements
+
+    circleEnterSelection.append('text')
+        .attr('x',function(d,i){
+
+            return self.xscale(i);
+        })
+        .attr('y', self.svgHeight/2+45)
+        .attr('class','yeartext')
+        .text(function(d){
+            return d.YEAR;
+
+        });
 
     //Style the chart by adding a dashed line that connects all these years.
     //HINT: Use .lineChart to style this dashed line
