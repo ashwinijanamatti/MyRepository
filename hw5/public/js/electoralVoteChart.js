@@ -61,7 +61,8 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
 
     //Group the states based on the winning party for the state;
     //then sort them based on the margin of victory
-
+    var xscale = d3.scaleLinear()
+    console.log(electionResult);
     //Create the stacked bar chart.
     //Use the global color scale to color code the rectangles.
     //HINT: Use .electoralVotes class to style your bars.

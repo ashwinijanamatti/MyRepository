@@ -138,8 +138,11 @@ YearChart.prototype.update = function(){
 
             d3.csv("data/Year_Timeline_"+d.YEAR+".csv",function(error,dataSelection){
 
-                self.electoralVoteChart.update();
-            })
+                self.electoralVoteChart.update(dataSelection,self.colorScale);
+                self.votePercentageChart.update(dataSelection,self.colorScale);
+                self.tileChart.update(dataSelection,self.colorScale);
+
+            });
 
         });
 
