@@ -101,21 +101,20 @@ TileChart.prototype.update = function(electionResult, colorScale){
             return [0,0];
         })
         .html(function(d) {
-            /* populate data in the following format
-             * tooltip_data = {
-             * "state": State,
-             * "winner":d.State_Winner
-             * "electoralVotes" : Total_EV
-             * "result":[
-             * {"nominee": D_Nominee_prop,"votecount": D_Votes,"percentage": D_Percentage,"party":"D"} ,
-             * {"nominee": R_Nominee_prop,"votecount": R_Votes,"percentage": R_Percentage,"party":"R"} ,
-             * {"nominee": I_Nominee_prop,"votecount": I_Votes,"percentage": I_Percentage,"party":"I"}
-             * ]
-             * }
-             * pass this as an argument to the tooltip_render function then,
-             * return the HTML content returned from that method.
-             * */
-            return ;
+            // populate data in the following format
+              var tooltip_data = {
+              "state": d.State,
+              "winner": d.State_Winner,
+              "electoralVotes" : d.Total_EV,
+              "result":[
+              {"nominee": d.D_Nominee_prop,"votecount": d.D_Votes,"percentage": d.D_Percentage,"party":"D"} ,
+              {"nominee": d.R_Nominee_prop,"votecount": d.R_Votes,"percentage": d.R_Percentage,"party":"R"} ,
+              {"nominee": d.I_Nominee_prop,"votecount": d.I_Votes,"percentage": d.I_Percentage,"party":"I"}
+              ]
+              };
+             // pass this as an argument to the tooltip_render function then,
+             // return the HTML content returned from that method.
+            return tooltip_data;
         });
 
     //Creates a legend element and assigns a scale that needs to be visualized
@@ -135,7 +134,7 @@ TileChart.prototype.update = function(electionResult, colorScale){
 
     //Lay rectangles corresponding to each state according to the 'row' and 'column' information in the data.
 
-    var square = 80;
+    var square = 50;
 
 
        // create each set of rows
@@ -157,6 +156,8 @@ TileChart.prototype.update = function(electionResult, colorScale){
 
     //rows.append('text');
 
+    rows.call(tip);
+
     rows
             .attr('class', 'tile')
             .attr('width', square)
@@ -175,14 +176,8 @@ TileChart.prototype.update = function(electionResult, colorScale){
                     return colorScale(d.RD_Difference);
             })
             .attr('stroke', '#000')
-            .on('mouseover',function(d){
-
-                console.log(d);
-            })
-            .on('mouseout',function (d) {
-
-                console.log(d);
-            });
+            .on('mouseover',tip.show)
+            .on('mouseout',tip.hide);
 
     /*rows
             .text(function(d){
