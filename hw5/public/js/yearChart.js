@@ -119,6 +119,7 @@ YearChart.prototype.update = function(){
 
 
     circleEnterSelection.append('circle')
+        .attr('class','yearChart')
         .attr('class', function(d){
 
             return self.chooseClass(d.PARTY);

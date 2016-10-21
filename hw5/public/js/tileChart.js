@@ -34,7 +34,8 @@ TileChart.prototype.init = function(){
                         .attr("width",self.svgWidth)
                         .attr("height",self.svgHeight)
                         .attr("transform", "translate(" + self.margin.left + ",0)")
-                        .style("bgcolor","green")
+                        .style("bgcolor","green");
+                        //.attr("transform","");
 
 };
 
@@ -119,7 +120,8 @@ TileChart.prototype.update = function(electionResult, colorScale){
 
     //Creates a legend element and assigns a scale that needs to be visualized
     self.legendSvg.append("g")
-        .attr("class", "legendQuantile");
+        .attr("class", "legendQuantile")
+        ;
 
     var legendQuantile = d3.legendColor()
         .shapeWidth(120)
@@ -128,9 +130,75 @@ TileChart.prototype.update = function(electionResult, colorScale){
         .scale(colorScale);
 
     // ******* TODO: PART IV *******
-    //Tansform the legend element to appear in the center and make a call to this element for it to display.
+    //Transform the legend element to appear in the center and make a call to this element for it to display.
+
 
     //Lay rectangles corresponding to each state according to the 'row' and 'column' information in the data.
+
+    var square = 80;
+
+
+       // create each set of rows
+        var rows = self.svg.append('g')
+            .attr("transform","scale(1,-1) rotate(-90)")
+            .selectAll('rect')
+            .data(electionResult);
+
+    rows.exit().remove();
+
+    //rows;
+
+    rows =    rows.enter()
+            .append('rect')
+
+
+    //rows .append('text');
+            .merge(rows);
+
+    //rows.append('text');
+
+    rows
+            .attr('class', 'tile')
+            .attr('width', square)
+            .attr('height', square)
+            .attr('x', function(d) {
+                    return d.Row * square;
+            })
+            .attr('y', function(d) {
+                return d.Space * square;
+            })
+            .attr('fill', function(d){
+
+                if(d.RD_Difference == 0)
+                    return 'darkgreen';
+                else
+                    return colorScale(d.RD_Difference);
+            })
+            .attr('stroke', '#000')
+            .on('mouseover',function(d){
+
+                console.log(d);
+            })
+            .on('mouseout',function (d) {
+
+                console.log(d);
+            });
+
+    /*rows
+            .text(function(d){
+
+                return d.Abbreviation;
+            })
+            .attr('x', function(d){
+
+                return (d.Row * square + square)/2;
+            })
+            .attr('y', function (d) {
+
+                return (d.Space * square + square)/2;
+            });
+
+*/
 
     //Display the state abbreviation and number of electoral votes on each of these rectangles
 

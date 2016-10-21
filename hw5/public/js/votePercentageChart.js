@@ -65,7 +65,7 @@ VotePercentageChart.prototype.tooltip_render = function (tooltip_data) {
  *
  * @param electionResult election data for the year selected
  */
-VotePercentageChart.prototype.update = function(electionResult){
+VotePercentageChart.prototype.update = function(electionResult,colorScale){
     var self = this;
 
     //for reference:https://github.com/Caged/d3-tip
@@ -96,6 +96,59 @@ VotePercentageChart.prototype.update = function(electionResult){
     //Create the stacked bar chart.
     //Use the global color scale to color code the rectangles.
     //HINT: Use .votesPercentage class to style your bars.
+
+/*
+    var data = electionResult.filter( function(d){
+
+        return d.D_PopularPercentage;
+    });
+
+    console.log(data);
+
+    var barsEnter = d3.select('#votes-percentage')
+        .select('svg')
+        .selectAll('rect')
+        .data(electionResult);
+
+    barsEnter.exit().remove();
+
+    barsEnter = barsEnter.enter()
+        .append('rect')
+        .merge(barsEnter);
+
+    barsEnter
+        .attr('x',function(d,i){
+
+            nextX += xscale(d.Total_EV);
+
+            if(i==0) {
+
+
+                return i;
+
+            }
+            else {
+                //previousX = xscale(voteChartData[i - 1].Total_EV);
+                return nextX - xscale(voteChartData[i].Total_EV);
+            }
+        })
+        .attr('y',self.svgHeight/2)
+        .attr('width', function(d){
+
+            return xscale(d.Total_EV);
+        })
+        .attr('height', 20)
+        .attr('class', 'electoralVotes')
+        .attr('fill',function(d){
+
+            if(d.RD_Difference == 0)
+                return "darkgreen";
+            else
+                return colorScale(d.RD_Difference);
+        });
+
+
+*/
 
     //Display the total percentage of votes won by each party
     //on top of the corresponding groups of bars.
