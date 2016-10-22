@@ -19,7 +19,11 @@ h1 {
     stroke: #FFF;
     stroke-width: 4;
 }
+.legendQuantile{
 
+    font-size: 13px;
+    text-align: center;
+}
 .path{
 
     stroke: #D3D3D3;
@@ -31,7 +35,7 @@ h1 {
 
 .yeartext, .tilestext, .brushtext{
     text-anchor:middle;
-    font-size: 24px;
+    font-size: 20px;
     fill: #565656;
     stroke-width: 0.1px;
     /*stroke: #e5e5e5;*/
@@ -39,7 +43,7 @@ h1 {
 
 .tilestextpercentage{
     text-anchor:middle;
-    font-size: 24px;
+    font-size: 20px;
     fill: #565656;
     stroke-width: 0.1px;
     /*stroke: #e5e5e5;*/

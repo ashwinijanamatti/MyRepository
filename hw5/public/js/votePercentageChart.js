@@ -256,7 +256,7 @@ VotePercentageChart.prototype.update = function(electionResult,colorScale){
         return d.percentage;
     });
 
-    mid_point.percentage = mid_point.percentage/2;
+    mid_point.percentage = Math.ceil(mid_point.percentage/2);
 
     mid_point.party = 'mid';
 

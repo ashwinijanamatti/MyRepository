@@ -260,7 +260,7 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
         return d.Total_EV;
     });
 
-    mid_point.sum = mid_point.sum/2;
+    mid_point.sum = Math.ceil(mid_point.sum/2);
 
     mid_point.party = 'mid';
 
