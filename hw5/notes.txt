@@ -1,0 +1,22 @@
+Chart1 - stacked bar chart:
+
+	Y-axis - year ranging from the selected year to the latest data available.
+
+	X-axis - states selected/all states
+
+	color coding to indicate the party(minimal text needed)
+
+	Minimalist graph that shows which party has won which state in each year, 
+
+	The line indicates which party won each year(global data).
+	
+Chart 2:
+
+	Y-axis - states selected/all states
+	
+	X-axis - year ranging from the selected year to the latest data available.
+	
+	color coding to indicate the party(red indicates red point/dot, blue indicates blue point/dot etc).
+	
+	Minimalist graph that shows which party has won which state in each year, also shows how
+	the states have changed trends.
