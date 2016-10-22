@@ -113,15 +113,7 @@ TileChart.prototype.update = function(electionResult, colorScale){
               ]
               };
 
-            /*var tooltip_data =
-                "state:" + d.State + "<br/>winner:" + d.State_Winner +
-                "<br/>electoralVotes : " + d.Total_EV +
-                "<br/>result : " +
-                    "<li>nominee:" +  d.D_Nominee_prop + " votecount:"  + d.D_Votes + " percentage:" + d.D_Percentage + " party:"+ "D" +
-                    "<li>nominee:" +  d.R_Nominee_prop + " votecount:" + d.R_Votes +" percentage:" + d.R_Percentage +" party:" +"R" +
-                    "<li>" + d.I_Nominee_prop +" " + d.I_Votes +" " + d.I_Percentage +" party:" + "I"
 
-            ;*/
              // pass this as an argument to the tooltip_render function then,
              // return the HTML content returned from that method.
             return self.tooltip_render(tooltip_data);
@@ -132,7 +124,7 @@ TileChart.prototype.update = function(electionResult, colorScale){
         .attr("class", "legendQuantile")
         ;*/
 
-    var shapewidth = self.svgWidth/12;
+    var shapewidth = self.svgWidth/12.3;
 
     var legendQuantile = d3.legendColor()
         .shapeWidth(shapewidth)

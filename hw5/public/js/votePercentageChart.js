@@ -272,9 +272,6 @@ VotePercentageChart.prototype.update = function(electionResult,colorScale){
 
     var datafortext = data.concat([mid_point]);
 
-    console.log(datafortext);
-
-
 
     var text = d3.select('#votes-percentage')
         .select('svg')

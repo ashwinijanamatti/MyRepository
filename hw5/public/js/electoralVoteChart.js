@@ -328,8 +328,7 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
         });
 
         self.shiftChart.update(data);
-        //console.log(data);
-        //console.log(y);
+
     };
 
     var brush = d3.brushX().extent([[0,0],[self.svgWidth,self.svgHeight]]).on("end", brushed);
