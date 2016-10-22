@@ -130,12 +130,18 @@ YearChart.prototype.update = function(){
             return self.xscale(i);
         })
         .attr('cy', self.svgHeight/2)
+        .on('mouseover', function(d){
+
+            d3.select(this).classed('highlighted',true);
+        })
+        .on('mouseout' , function(d){
+
+            d3.select(this).classed('highlighted',false);
+        })
         .on('click', function(d){
 
-            d3.select('.highlighted').classed('highlighted',false);
-            this.setAttribute('class','highlighted');
-
-            //console.log(d);
+            d3.selectAll('.selected').classed('selected',false);//.classed('yearChart',true);
+            d3.select(this).classed('selected',true);
 
             d3.csv("data/Year_Timeline_"+d.YEAR+".csv",function(error,dataSelection){
 

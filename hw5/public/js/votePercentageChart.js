@@ -5,7 +5,7 @@ function VotePercentageChart(){
 
     var self = this;
     self.init();
-};
+}
 
 /**
  * Initializes the svg elements required for this chart
@@ -42,7 +42,7 @@ VotePercentageChart.prototype.chooseClass = function (party) {
     else if (party == "I"){
         return "independent";
     }
-}
+};
 
 /**
  * Renders the HTML content for tool tip
@@ -58,7 +58,7 @@ VotePercentageChart.prototype.tooltip_render = function (tooltip_data) {
     });
 
     return text;
-}
+};
 
 /**
  * Creates the stacked bar chart, text content and tool tips for Vote Percentage chart
@@ -70,7 +70,7 @@ VotePercentageChart.prototype.update = function(electionResult,colorScale){
 
     //for reference:https://github.com/Caged/d3-tip
     //Use this tool tip element to handle any hover over the chart
-    tip = d3.tip().attr('class', 'd3-tip')
+    var tip = d3.tip().attr('class', 'd3-tip')
         .direction('s')
         .offset(function() {
             return [0,0];
@@ -87,7 +87,7 @@ VotePercentageChart.prototype.update = function(electionResult,colorScale){
              * pass this as an argument to the tooltip_render function then,
              * return the HTML content returned from that method.
              * */
-            return ;
+            //return ;
         });
 
 
@@ -97,18 +97,43 @@ VotePercentageChart.prototype.update = function(electionResult,colorScale){
     //Use the global color scale to color code the rectangles.
     //HINT: Use .votesPercentage class to style your bars.
 
-/*
-    var data = electionResult.filter( function(d){
+    var nextX = 0;
 
-        return d.D_PopularPercentage;
-    });
+    var i_percentage = 0;
 
-    console.log(data);
+     if(electionResult[0].I_PopularPercentage.split("%").length > 0)
+
+         i_percentage =  electionResult[0].I_PopularPercentage.split("%")[0];
+
+
+    var data = [
+        {
+            "percentage"  : i_percentage,
+            "party" : "I"
+        },
+        {
+            "percentage" : electionResult[0].D_PopularPercentage.split("%")[0],
+            "party" : "D"
+        },
+        {
+            "percentage" : electionResult[0].R_PopularPercentage.split("%")[0],
+            "party" : "R"
+        }
+    ];
+
+
+    var xscale = d3.scaleLinear()
+        .rangeRound([0,self.svgWidth])
+        .domain([0,d3.sum(data, function(d){
+
+            return d.percentage;
+        })]);
+
 
     var barsEnter = d3.select('#votes-percentage')
         .select('svg')
         .selectAll('rect')
-        .data(electionResult);
+        .data(data);
 
     barsEnter.exit().remove();
 
@@ -119,36 +144,31 @@ VotePercentageChart.prototype.update = function(electionResult,colorScale){
     barsEnter
         .attr('x',function(d,i){
 
-            nextX += xscale(d.Total_EV);
+            nextX += xscale(d.percentage);
 
             if(i==0) {
 
-
                 return i;
-
             }
             else {
-                //previousX = xscale(voteChartData[i - 1].Total_EV);
-                return nextX - xscale(voteChartData[i].Total_EV);
+
+                return nextX - xscale(d.percentage);
             }
         })
         .attr('y',self.svgHeight/2)
         .attr('width', function(d){
 
-            return xscale(d.Total_EV);
+            return xscale(d.percentage);
         })
         .attr('height', 20)
-        .attr('class', 'electoralVotes')
-        .attr('fill',function(d){
+        //.attr('class', 'votesPercentage')
+        .attr('class',function(d){
 
-            if(d.RD_Difference == 0)
-                return "darkgreen";
-            else
-                return colorScale(d.RD_Difference);
+            return self.chooseClass(d.party);
         });
 
 
-*/
+
 
     //Display the total percentage of votes won by each party
     //on top of the corresponding groups of bars.

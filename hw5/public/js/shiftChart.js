@@ -26,13 +26,29 @@ ShiftChart.prototype.update = function(selectedStates){
     // ******* TODO: PART V *******
     //Display the names of selected states in a list
 
+    enterSelection = d3.select('#stateList')
+        .selectAll('li')
+        .data(selectedStates);
+
+    enterSelection.exit().remove();
+
+    enterSelection = enterSelection.enter()
+        .append('li')
+        .merge(enterSelection);
+
+    enterSelection.text(function(d){
+
+        return d.State;
+    });
+
+
     //******** TODO: PART VI*******
     //Use the shift data corresponding to the selected years and sketch a visualization
     //that encodes the shift information
 
     //******** TODO: EXTRA CREDIT I*******
     //Handle brush selection on the year chart and sketch a visualization
-    //that encodes the shift informatiomation for all the states on selected years
+    //that encodes the shift information for all the states on selected years
 
     //******** TODO: EXTRA CREDIT II*******
     //Create a visualization to visualize the shift data

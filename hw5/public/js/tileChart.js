@@ -102,7 +102,7 @@ TileChart.prototype.update = function(electionResult, colorScale){
         })
         .html(function(d) {
             // populate data in the following format
-              var tooltip_data = {
+              /*var tooltip_data = {
               "state": d.State,
               "winner": d.State_Winner,
               "electoralVotes" : d.Total_EV,
@@ -111,7 +111,17 @@ TileChart.prototype.update = function(electionResult, colorScale){
               {"nominee": d.R_Nominee_prop,"votecount": d.R_Votes,"percentage": d.R_Percentage,"party":"R"} ,
               {"nominee": d.I_Nominee_prop,"votecount": d.I_Votes,"percentage": d.I_Percentage,"party":"I"}
               ]
-              };
+              };*/
+
+            var tooltip_data =
+                "state:" + d.State + "<br/>winner:" + d.State_Winner +
+                "<br/>electoralVotes : " + d.Total_EV +
+                "<br/>result : " +
+                    "<li>nominee:" +  d.D_Nominee_prop + " votecount:"  + d.D_Votes + " percentage:" + d.D_Percentage + " party:"+ "D" +
+                    "<li>nominee:" +  d.R_Nominee_prop + " votecount:" + d.R_Votes +" percentage:" + d.R_Percentage +" party:" +"R" +
+                    "<li>" + d.I_Nominee_prop +" " + d.I_Votes +" " + d.I_Percentage +" party:" + "I"
+
+            ;
              // pass this as an argument to the tooltip_render function then,
              // return the HTML content returned from that method.
             return tooltip_data;
@@ -134,66 +144,66 @@ TileChart.prototype.update = function(electionResult, colorScale){
 
     //Lay rectangles corresponding to each state according to the 'row' and 'column' information in the data.
 
-    var square = 50;
-
+    var tileWidth  = self.svgWidth/(self.maxColumns +1);
+    var tileHeight  = self.svgHeight/(self.maxRows+1);
 
        // create each set of rows
-        var rows = self.svg.append('g')
-            .attr("transform","scale(1,-1) rotate(-90)")
-            .selectAll('rect')
+    var rows = self.svg
+            .selectAll('.tile')
             .data(electionResult);
+
+    var rowsEnter = rows.enter()
+        .append('g');
+
+    rowsEnter
+        .merge(rows);
+
 
     rows.exit().remove();
 
-    //rows;
+    self.svg.call(tip);
 
-    rows =    rows.enter()
-            .append('rect')
-
-
-    //rows .append('text');
-            .merge(rows);
-
-    //rows.append('text');
-
-    rows.call(tip);
-
-    rows
+    rowsEnter.append('rect')
             .attr('class', 'tile')
-            .attr('width', square)
-            .attr('height', square)
+            .attr('width', tileWidth)
+            .attr('height', tileHeight)
             .attr('x', function(d) {
-                    return d.Row * square;
+                    return (d.Space) * tileWidth;
             })
             .attr('y', function(d) {
-                return d.Space * square;
+                return (d.Row) * tileHeight;
             })
-            .attr('fill', function(d){
+            .style('fill', function(d){
 
                 if(d.RD_Difference == 0)
-                    return 'darkgreen';
+                    return '#45AD6A';
                 else
                     return colorScale(d.RD_Difference);
             })
             .attr('stroke', '#000')
+            .merge(rowsEnter)
             .on('mouseover',tip.show)
             .on('mouseout',tip.hide);
 
-    /*rows
+
+    rowsEnter.append('text')
+            .attr('class','tilestext')
             .text(function(d){
 
                 return d.Abbreviation;
             })
             .attr('x', function(d){
 
-                return (d.Row * square + square)/2;
+                return (d.Space) * tileWidth + tileWidth/2;
             })
             .attr('y', function (d) {
 
-                return (d.Space * square + square)/2;
-            });
+                return (d.Row) * tileHeight + tileHeight/2;
+            })
+            .merge(rowsEnter);
 
-*/
+
+
 
     //Display the state abbreviation and number of electoral votes on each of these rectangles
 

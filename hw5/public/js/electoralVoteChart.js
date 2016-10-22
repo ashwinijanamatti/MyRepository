@@ -4,10 +4,12 @@
  *
  * @param shiftChart an instance of the ShiftChart class
  */
-function ElectoralVoteChart(){
+function ElectoralVoteChart(shiftChart){
 
     var self = this;
     self.init();
+    self.shiftChart = shiftChart;
+
 };
 
 /**
@@ -122,29 +124,33 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
 
             if(i==0) {
 
+                d.xscale = i;
 
                 return i;
 
             }
             else {
-                //previousX = xscale(voteChartData[i - 1].Total_EV);
-                return nextX - xscale(voteChartData[i].Total_EV);
+
+                d.xscale = nextX - xscale(d.Total_EV);
+
+                return nextX - xscale(d.Total_EV);
             }
         })
-        .attr('y',self.svgHeight/2)
+        .attr('y',self.svgHeight/3)
         .attr('width', function(d){
 
             return xscale(d.Total_EV);
         })
-        .attr('height', 20)
+        .attr('height', 40)
         .attr('class', 'electoralVotes')
         .attr('fill',function(d){
 
             if(d.RD_Difference == 0)
-                return "darkgreen";
+                return "#45AD6A";
             else
                 return colorScale(d.RD_Difference);
         });
+
 
 
     //Display total count of electoral votes won by the Democrat and Republican party
@@ -166,5 +172,28 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     //Implement a call back method to handle the brush end event.
     //Call the update method of shiftChart and pass the data corresponding to brush selection.
     //HINT: Use the .brush class to style the brush.
+
+    var brushed = function(){
+
+        //var data = d3.event.selection || xscale.range();
+
+        //var y = xscale.domain(brush.empty() ? xscale.domain() : brush.extent());
+
+        var selection = d3.event.selection || 0;//brush.extent();
+
+        var data = voteChartData.filter(function(d){
+
+           return d.xscale >= selection[0] && d.xscale <= selection[1];
+        });
+
+        self.shiftChart.update(data);
+        //console.log(data);
+        //console.log(y);
+    };
+
+    var brush = d3.brushX().extent([[0,0],[self.svgWidth,self.svgHeight]]).on("end", brushed);
+
+
+    self.svg.append("g").attr("class", "brush").call(brush);
 
 };
