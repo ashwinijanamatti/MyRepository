@@ -26,8 +26,8 @@
       <file leaf-file-name="hw5.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/hw5.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="569">
-              <caret line="38" column="43" selection-start-line="38" selection-start-column="43" selection-end-line="38" selection-end-column="43" />
+            <state relative-caret-position="416">
+              <caret line="29" column="11" selection-start-line="29" selection-start-column="11" selection-end-line="29" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -43,11 +43,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="electoralVoteChart.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="electoralVoteChart.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/js/electoralVoteChart.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1360">
-              <caret line="83" column="33" selection-start-line="83" selection-start-column="33" selection-end-line="83" selection-end-column="33" />
+            <state relative-caret-position="614">
+              <caret line="181" column="75" selection-start-line="181" selection-start-column="75" selection-end-line="181" selection-end-column="75" />
               <folding />
             </state>
           </provider>
@@ -77,7 +77,7 @@
         <entry file="file://$PROJECT_DIR$/public/js/votePercentageChart.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="323">
-              <caret line="78" column="14" selection-start-line="78" selection-start-column="14" selection-end-line="78" selection-end-column="14" />
+              <caret line="179" column="22" selection-start-line="179" selection-start-column="22" selection-end-line="179" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -86,21 +86,21 @@
       <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
-              <caret line="109" column="17" selection-start-line="109" selection-start-column="10" selection-end-line="109" selection-end-column="17" />
+            <state relative-caret-position="423">
+              <caret line="39" column="20" selection-start-line="39" selection-start-column="1" selection-end-line="39" selection-end-column="20" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tileChart.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="tileChart.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/tileChart.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="121" column="98" selection-start-line="121" selection-start-column="98" selection-end-line="121" selection-end-column="98" />
+            <state relative-caret-position="510">
+              <caret line="211" column="37" selection-start-line="211" selection-start-column="37" selection-end-line="211" selection-end-column="37" />
               <folding>
-                <marker date="1477111261275" expanded="true" signature="3473:3488" ph="{...}" />
-                <marker date="1477111261275" expanded="true" signature="3487:3488" ph="/*...*/" />
+                <marker date="1477162401049" expanded="true" signature="3473:3488" ph="{...}" />
+                <marker date="1477162401049" expanded="true" signature="3487:3488" ph="/*...*/" />
               </folding>
             </state>
           </provider>
@@ -133,12 +133,12 @@
       <list>
         <option value="$PROJECT_DIR$/hw5.html" />
         <option value="$PROJECT_DIR$/public/js/main.js" />
-        <option value="$PROJECT_DIR$/public/css/style.css" />
         <option value="$PROJECT_DIR$/public/js/shiftChart.js" />
         <option value="$PROJECT_DIR$/public/js/yearChart.js" />
         <option value="$PROJECT_DIR$/public/js/votePercentageChart.js" />
-        <option value="$PROJECT_DIR$/public/js/electoralVoteChart.js" />
+        <option value="$PROJECT_DIR$/public/css/style.css" />
         <option value="$PROJECT_DIR$/public/js/tileChart.js" />
+        <option value="$PROJECT_DIR$/public/js/electoralVoteChart.js" />
       </list>
     </option>
   </component>
@@ -353,12 +353,12 @@
       <workItem from="1477066965059" duration="2991000" />
       <workItem from="1477078818429" duration="33000" />
       <workItem from="1477078997463" duration="795000" />
-      <workItem from="1477080632094" duration="17994000" />
+      <workItem from="1477080632094" duration="25915000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="65066000" />
+    <option name="totallyTimeSpent" value="72987000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -474,8 +474,8 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1477111261275" expanded="true" signature="3473:3488" ph="{...}" />
-            <marker date="1477111261275" expanded="true" signature="3487:3488" ph="/*...*/" />
+            <marker date="1477162401049" expanded="true" signature="3473:3488" ph="{...}" />
+            <marker date="1477162401049" expanded="true" signature="3487:3488" ph="/*...*/" />
           </folding>
         </state>
       </provider>
@@ -594,8 +594,8 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1477111261275" expanded="true" signature="3473:3488" ph="{...}" />
-            <marker date="1477111261275" expanded="true" signature="3487:3488" ph="/*...*/" />
+            <marker date="1477162401049" expanded="true" signature="3473:3488" ph="{...}" />
+            <marker date="1477162401049" expanded="true" signature="3487:3488" ph="/*...*/" />
           </folding>
         </state>
       </provider>
@@ -730,58 +730,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="109" column="17" selection-start-line="109" selection-start-column="10" selection-end-line="109" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/js/main.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
           <caret line="22" column="60" selection-start-line="22" selection-start-column="60" selection-end-line="22" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/votePercentageChart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="78" column="14" selection-start-line="78" selection-start-column="14" selection-end-line="78" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/shiftChart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="36" column="31" selection-start-line="36" selection-start-column="31" selection-end-line="36" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/electoralVoteChart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1360">
-          <caret line="83" column="33" selection-start-line="83" selection-start-column="33" selection-end-line="83" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/yearChart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="145" column="12" selection-start-line="145" selection-start-column="12" selection-end-line="145" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hw5.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="569">
-          <caret line="38" column="43" selection-start-line="38" selection-start-column="43" selection-end-line="38" selection-end-column="43" />
           <folding />
         </state>
       </provider>
@@ -794,14 +746,62 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/tileChart.js">
+    <entry file="file://$PROJECT_DIR$/hw5.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="29" column="11" selection-start-line="29" selection-start-column="11" selection-end-line="29" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/yearChart.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="145" column="12" selection-start-line="145" selection-start-column="12" selection-end-line="145" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/shiftChart.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="36" column="31" selection-start-line="36" selection-start-column="31" selection-end-line="36" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/votePercentageChart.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
-          <caret line="121" column="98" selection-start-line="121" selection-start-column="98" selection-end-line="121" selection-end-column="98" />
+          <caret line="179" column="22" selection-start-line="179" selection-start-column="22" selection-end-line="179" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="423">
+          <caret line="39" column="20" selection-start-line="39" selection-start-column="1" selection-end-line="39" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/tileChart.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="211" column="37" selection-start-line="211" selection-start-column="37" selection-end-line="211" selection-end-column="37" />
           <folding>
-            <marker date="1477111261275" expanded="true" signature="3473:3488" ph="{...}" />
-            <marker date="1477111261275" expanded="true" signature="3487:3488" ph="/*...*/" />
+            <marker date="1477162401049" expanded="true" signature="3473:3488" ph="{...}" />
+            <marker date="1477162401049" expanded="true" signature="3487:3488" ph="/*...*/" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/electoralVoteChart.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="614">
+          <caret line="181" column="75" selection-start-line="181" selection-start-column="75" selection-end-line="181" selection-end-column="75" />
+          <folding />
         </state>
       </provider>
     </entry>

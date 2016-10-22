@@ -161,11 +161,33 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     //Display a bar with minimal width in the center of the bar chart to indicate the 50% mark
     //HINT: Use .middlePoint class to style this bar.
 
+    var centerBar = d3.select('#electoral-vote')
+        .select('svg')
+        .selectAll('.middlePoint')
+        .data([2]);
+
+    centerBar.exit().remove();
+
+    centerBar = centerBar.enter()
+        .append('rect')
+        .classed('middlePoint',true)
+        .merge(centerBar);
+
+    centerBar
+        .attr('x', self.svgWidth/2)
+        .attr('width', function(d){
+            return d;
+        })
+        .attr('y', (0.25 * self.svgHeight))
+        .attr('height', (0.7 * self.svgHeight) - (0.25 * self.svgHeight) );
+
     //Just above this, display the text mentioning the total number of electoral votes required
     // to win the elections throughout the country
     //HINT: Use .electoralVotesNote class to style this text element
 
     //HINT: Use the chooseClass method to style your elements based on party wherever necessary.
+
+
 
     //******* TODO: PART V *******
     //Implement brush on the bar chart created above.

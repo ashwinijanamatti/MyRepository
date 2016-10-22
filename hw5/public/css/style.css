@@ -28,15 +28,16 @@ h1 {
     stroke-dasharray: 4,4;
 }
 
-.yeartext1{
+
+.yeartext, .tilestext, .brushtext{
     text-anchor:middle;
-    font-size: 10px;
+    font-size: 24px;
     fill: #565656;
     stroke-width: 0.1px;
     /*stroke: #e5e5e5;*/
 }
 
-.yeartext, .tilestext, .brushtext{
+.tilestextpercentage{
     text-anchor:middle;
     font-size: 24px;
     fill: #565656;

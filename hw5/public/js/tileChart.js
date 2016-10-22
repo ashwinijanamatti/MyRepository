@@ -17,7 +17,7 @@ TileChart.prototype.init = function(){
     //Gets access to the div element created for this chart and legend element from HTML
     var divTileChart = d3.select("#tiles").classed("content", true);
     var legend = d3.select("#legend").classed("content",true);
-    self.margin = {top: 30, right: 20, bottom: 30, left: 50};
+    self.margin = {top: 30, right: 20, bottom: 30, left: 70};
 
     var svgBounds = divTileChart.node().getBoundingClientRect();
     self.svgWidth = svgBounds.width - self.margin.left - self.margin.right;
@@ -102,7 +102,7 @@ TileChart.prototype.update = function(electionResult, colorScale){
         })
         .html(function(d) {
             // populate data in the following format
-              /*var tooltip_data = {
+              var tooltip_data = {
               "state": d.State,
               "winner": d.State_Winner,
               "electoralVotes" : d.Total_EV,
@@ -111,9 +111,9 @@ TileChart.prototype.update = function(electionResult, colorScale){
               {"nominee": d.R_Nominee_prop,"votecount": d.R_Votes,"percentage": d.R_Percentage,"party":"R"} ,
               {"nominee": d.I_Nominee_prop,"votecount": d.I_Votes,"percentage": d.I_Percentage,"party":"I"}
               ]
-              };*/
+              };
 
-            var tooltip_data =
+            /*var tooltip_data =
                 "state:" + d.State + "<br/>winner:" + d.State_Winner +
                 "<br/>electoralVotes : " + d.Total_EV +
                 "<br/>result : " +
@@ -121,10 +121,10 @@ TileChart.prototype.update = function(electionResult, colorScale){
                     "<li>nominee:" +  d.R_Nominee_prop + " votecount:" + d.R_Votes +" percentage:" + d.R_Percentage +" party:" +"R" +
                     "<li>" + d.I_Nominee_prop +" " + d.I_Votes +" " + d.I_Percentage +" party:" + "I"
 
-            ;
+            ;*/
              // pass this as an argument to the tooltip_render function then,
              // return the HTML content returned from that method.
-            return tooltip_data;
+            return self.tooltip_render(tooltip_data);
         });
 
     //Creates a legend element and assigns a scale that needs to be visualized
@@ -152,18 +152,18 @@ TileChart.prototype.update = function(electionResult, colorScale){
             .selectAll('.tile')
             .data(electionResult);
 
-    var rowsEnter = rows.enter()
-        .append('g');
+    rows.exit().remove();
 
-    rowsEnter
+    var rowsEnter = rows.enter()
+        .append('rect')
         .merge(rows);
 
 
-    rows.exit().remove();
+
 
     self.svg.call(tip);
 
-    rowsEnter.append('rect')
+    rowsEnter
             .attr('class', 'tile')
             .attr('width', tileWidth)
             .attr('height', tileHeight)
@@ -182,11 +182,24 @@ TileChart.prototype.update = function(electionResult, colorScale){
             })
             .attr('stroke', '#000')
             .merge(rowsEnter)
-            .on('mouseover',tip.show)
+            .on('mouseover',function(d) {
+
+                return tip.show(d);
+            })
             .on('mouseout',tip.hide);
 
+    var text = self.svg
+        .selectAll('.tilestext')
+        .data(electionResult);
 
-    rowsEnter.append('text')
+    text.exit().remove();
+
+    text = text.enter()
+        .append('text')
+        .merge(text);
+
+    text//.append('text')
+        //.attr()
             .attr('class','tilestext')
             .text(function(d){
 
@@ -194,13 +207,41 @@ TileChart.prototype.update = function(electionResult, colorScale){
             })
             .attr('x', function(d){
 
-                return (d.Space) * tileWidth + tileWidth/2;
+                return (d.Space) * tileWidth + (0.5 * tileWidth);
             })
             .attr('y', function (d) {
 
-                return (d.Row) * tileHeight + tileHeight/2;
+                return (d.Row) * tileHeight + (0.4 * tileHeight);
             })
             .merge(rowsEnter);
+
+    var text1 = self.svg
+        .selectAll('.tilestextpercentage')
+        .data(electionResult);
+
+    text1.exit().remove();
+
+    text1 = text1.enter()
+        .append('text')
+        .merge(text1);
+
+
+    text1//.append('text')
+    //.attr()
+        .attr('class','tilestextpercentage')
+        .text(function(d){
+
+            return d.Total_EV;
+        })
+        .attr('x', function(d){
+
+            return (d.Space) * tileWidth + (0.5 * tileWidth);
+        })
+        .attr('y', function (d) {
+
+            return (d.Row) * tileHeight + (0.66 *tileHeight);
+        })
+        .merge(rowsEnter);
 
 
 

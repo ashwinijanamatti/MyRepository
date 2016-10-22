@@ -76,18 +76,18 @@ VotePercentageChart.prototype.update = function(electionResult,colorScale){
             return [0,0];
         })
         .html(function(d) {
-            /* populate data in the following format
-             * tooltip_data = {
-             * "result":[
-             * {"nominee": D_Nominee_prop,"votecount": D_Votes_Total,"percentage": D_PopularPercentage,"party":"D"} ,
-             * {"nominee": R_Nominee_prop,"votecount": R_Votes_Total,"percentage": R_PopularPercentage,"party":"R"} ,
-             * {"nominee": I_Nominee_prop,"votecount": I_Votes_Total,"percentage": I_PopularPercentage,"party":"I"}
-             * ]
-             * }
-             * pass this as an argument to the tooltip_render function then,
-             * return the HTML content returned from that method.
-             * */
-            //return ;
+            // populate data in the following format
+              tooltip_data = {
+              "result":[
+              {"nominee": d.D_Nominee_prop,"votecount": d.D_Votes_Total,"percentage": d.D_PopularPercentage,"party":"D"} ,
+              {"nominee": d.R_Nominee_prop,"votecount": d.R_Votes_Total,"percentage": d.R_PopularPercentage,"party":"R"} ,
+              {"nominee": d.I_Nominee_prop,"votecount": d.I_Votes_Total,"percentage": d.I_PopularPercentage,"party":"I"}
+              ]
+             }
+              //pass this as an argument to the tooltip_render function then,
+             //return the HTML content returned from that method.
+
+            return self.tooltip_render(tooltip_data);
         });
 
 
@@ -108,15 +108,43 @@ VotePercentageChart.prototype.update = function(electionResult,colorScale){
 
     var data = [
         {
-            "percentage"  : i_percentage,
+            "percentage" : i_percentage,
+            "D_PopularPercentage"  : electionResult[0].D_PopularPercentage.split("%")[0],
+            "D_Nominee_prop" : electionResult[0].D_Nominee_prop,
+            "D_Votes_Total" :  electionResult[0].D_Votes_Total,
+            "I_PopularPercentage"  : i_percentage,
+            "I_Nominee_prop" : electionResult[0].I_Nominee_prop,
+            "I_Votes_Total" :  electionResult[0].I_Votes_Total,
+            "R_PopularPercentage"  : electionResult[0].R_PopularPercentage.split("%")[0],
+            "R_Nominee_prop" : electionResult[0].R_Nominee_prop,
+            "R_Votes_Total" :  electionResult[0].R_Votes_Total,
             "party" : "I"
+
         },
         {
             "percentage" : electionResult[0].D_PopularPercentage.split("%")[0],
+            "D_PopularPercentage"  : electionResult[0].D_PopularPercentage.split("%")[0],
+            "D_Nominee_prop" : electionResult[0].D_Nominee_prop,
+            "D_Votes_Total" :  electionResult[0].D_Votes_Total,
+            "I_PopularPercentage"  : i_percentage,
+            "I_Nominee_prop" : electionResult[0].I_Nominee_prop,
+            "I_Votes_Total" :  electionResult[0].I_Votes_Total,
+            "R_PopularPercentage"  : electionResult[0].R_PopularPercentage.split("%")[0],
+            "R_Nominee_prop" : electionResult[0].R_Nominee_prop,
+            "R_Votes_Total" :  electionResult[0].R_Votes_Total,
             "party" : "D"
         },
         {
             "percentage" : electionResult[0].R_PopularPercentage.split("%")[0],
+            "D_PopularPercentage"  : electionResult[0].D_PopularPercentage.split("%")[0],
+            "D_Nominee_prop" : electionResult[0].D_Nominee_prop,
+            "D_Votes_Total" :  electionResult[0].D_Votes_Total,
+            "I_PopularPercentage"  : i_percentage,
+            "I_Nominee_prop" : electionResult[0].I_Nominee_prop,
+            "I_Votes_Total" :  electionResult[0].I_Votes_Total,
+            "R_PopularPercentage"  : electionResult[0].R_PopularPercentage.split("%")[0],
+            "R_Nominee_prop" : electionResult[0].R_Nominee_prop,
+            "R_Votes_Total" :  electionResult[0].R_Votes_Total,
             "party" : "R"
         }
     ];
@@ -132,7 +160,7 @@ VotePercentageChart.prototype.update = function(electionResult,colorScale){
 
     var barsEnter = d3.select('#votes-percentage')
         .select('svg')
-        .selectAll('rect')
+        .selectAll('.votePercentage')
         .data(data);
 
     barsEnter.exit().remove();
@@ -141,7 +169,10 @@ VotePercentageChart.prototype.update = function(electionResult,colorScale){
         .append('rect')
         .merge(barsEnter);
 
+    self.svg.call(tip);
+
     barsEnter
+        .classed('votePercentage',true)
         .attr('x',function(d,i){
 
             nextX += xscale(d.percentage);
@@ -165,9 +196,30 @@ VotePercentageChart.prototype.update = function(electionResult,colorScale){
         .attr('class',function(d){
 
             return self.chooseClass(d.party);
-        });
+        })
+        .on('mouseover',tip.show)
+        .on('mouseout',tip.hide);
 
 
+    var centerBar = d3.select('#votes-percentage')
+        .select('svg')
+        .selectAll('.middlePoint')
+        .data([2]);
+
+    centerBar.exit().remove();
+
+    centerBar = centerBar.enter()
+        .append('rect')
+        .classed('middlePoint',true)
+        .merge(centerBar);
+
+    centerBar
+        .attr('x', self.svgWidth/2)
+        .attr('width', function(d){
+            return d;
+        })
+        .attr('y', (0.45 * self.svgHeight))
+        .attr('height', (0.65 * self.svgHeight) - (0.45 * self.svgHeight) );
 
 
     //Display the total percentage of votes won by each party
