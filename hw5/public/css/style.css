@@ -51,7 +51,7 @@ h1 {
 }
 
 .electoralVoteText, .votesPercentageText{
-    font-size: 35px;
+    font-size: 20px;
 }
 .end{
     text-anchor:end;

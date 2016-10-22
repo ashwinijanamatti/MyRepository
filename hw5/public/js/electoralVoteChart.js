@@ -187,6 +187,125 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
 
     //HINT: Use the chooseClass method to style your elements based on party wherever necessary.
 
+    var i_data = [];
+
+    i_data.sum = d3.sum(voteChartData,function(d){
+
+
+        if(d.State_Winner.toUpperCase() == 'I') {
+
+            return d.Total_EV;
+        }
+    });
+
+    i_data.party = 'I';
+
+    for(i=0;i<voteChartData.length;i++) {
+
+        if(voteChartData[i]['State_Winner'] == 'I') {
+
+            i_data.xscale = voteChartData[i].xscale;
+            break;
+        }
+    }
+
+     var d_data = [];
+    var count = 0;
+
+    d_data.sum = d3.sum(voteChartData,function(d){
+
+        if(d.State_Winner.toUpperCase() == 'D')
+            return d.Total_EV;
+    });
+    d_data.party = 'D';
+
+    //making the decmocratic to appear a little to the right because it was
+    // overlapping with the independant party for the year 1960
+
+    for(i=0;i<voteChartData.length;i++) {
+
+        if(voteChartData[i]['State_Winner'] == 'D') {
+
+            d_data.xscale = voteChartData[i].xscale;
+
+            count++;
+
+            if(count == 3)
+                break;
+
+        }
+    }
+
+    var r_data = [];
+
+    r_data.sum = d3.sum(voteChartData,function(d){
+
+        if(d.State_Winner.toUpperCase() == 'R')
+            return d.Total_EV;
+    });
+    r_data.party = 'R';
+
+    for(i=0;i<voteChartData.length;i++) {
+
+        if(voteChartData[i]['State_Winner'] == 'R') {
+
+            r_data.xscale = voteChartData[i].xscale;
+
+        }
+    }
+
+    var mid_point = [];
+    mid_point.sum = d3.sum(voteChartData,function(d){
+
+        return d.Total_EV;
+    });
+
+    mid_point.sum = mid_point.sum/2;
+
+    mid_point.party = 'mid';
+
+    mid_point.xscale = (self.svgWidth/2) - 100;
+
+
+
+    var datafortext =  [d_data,r_data,mid_point];
+
+
+    if(i_data.sum > 0){
+
+        datafortext.push(i_data);
+    }
+
+    var text = d3.select('#electoral-vote')
+        .select('svg')
+        .selectAll('.electoralVoteText')
+        .data(datafortext);
+
+    text.exit().remove();
+
+    text = text.enter()
+        .append('text')
+        .merge(text);
+
+    text.attr('x',function(d){
+
+            return d.xscale;
+        })
+        .attr('y', (0.2 * self.svgHeight))
+        .attr('class',function(d){
+
+            if(d.party == 'mid')
+                return 'electoralVoteText';
+
+            return 'electoralVoteText ' + self.chooseClass(d.party);
+        })
+        .text(function(d){
+
+            if(d.party == 'mid')
+                return 'Electoral Vote('+d.sum+' needed to win)';
+            return d.sum;
+        });
+
 
 
     //******* TODO: PART V *******

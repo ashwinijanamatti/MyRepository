@@ -118,6 +118,7 @@ VotePercentageChart.prototype.update = function(electionResult,colorScale){
             "R_PopularPercentage"  : electionResult[0].R_PopularPercentage.split("%")[0],
             "R_Nominee_prop" : electionResult[0].R_Nominee_prop,
             "R_Votes_Total" :  electionResult[0].R_Votes_Total,
+            "name": electionResult[0].I_Nominee_prop,
             "party" : "I"
 
         },
@@ -132,6 +133,7 @@ VotePercentageChart.prototype.update = function(electionResult,colorScale){
             "R_PopularPercentage"  : electionResult[0].R_PopularPercentage.split("%")[0],
             "R_Nominee_prop" : electionResult[0].R_Nominee_prop,
             "R_Votes_Total" :  electionResult[0].R_Votes_Total,
+            "name": electionResult[0].D_Nominee_prop,
             "party" : "D"
         },
         {
@@ -145,6 +147,7 @@ VotePercentageChart.prototype.update = function(electionResult,colorScale){
             "R_PopularPercentage"  : electionResult[0].R_PopularPercentage.split("%")[0],
             "R_Nominee_prop" : electionResult[0].R_Nominee_prop,
             "R_Votes_Total" :  electionResult[0].R_Votes_Total,
+            "name": electionResult[0].R_Nominee_prop,
             "party" : "R"
         }
     ];
@@ -179,9 +182,12 @@ VotePercentageChart.prototype.update = function(electionResult,colorScale){
 
             if(i==0) {
 
+                d.xscale = i;
+
                 return i;
             }
             else {
+                d.xscale = nextX - xscale(d.percentage);
 
                 return nextX - xscale(d.percentage);
             }
@@ -199,6 +205,119 @@ VotePercentageChart.prototype.update = function(electionResult,colorScale){
         })
         .on('mouseover',tip.show)
         .on('mouseout',tip.hide);
+
+    var text1 = d3.select('#votes-percentage')
+        .select('svg')
+        .selectAll('.votesPercentageNote')
+        .data(data);
+
+
+    text1.exit().remove();
+
+
+    text1 = text1.enter()
+        .append('text')
+        .merge(text1);
+
+
+    text1.attr('x',function(d,i){
+
+        if(d.percentage) {
+
+            if(d.party == 'R')
+                return ((self.svgWidth - d.xscale)/2) + d.xscale;
+            else if(d.party == 'D')
+                return d.xscale + ((data[i+1].xscale+d.xscale)/3);
+            return d.xscale;
+        }
+        else
+            return;
+        })
+        .attr('y', (0.3 * self.svgHeight))
+        .attr('class',function(d){
+
+            return 'votesPercentageNote ' + self.chooseClass(d.party);
+        })
+        .text(function(d){
+
+            if(d.name)
+                return d.name;
+            else
+                return;
+
+        });
+
+
+
+    var mid_point = [];
+
+    mid_point.percentage = d3.sum(data,function(d){
+
+        return d.percentage;
+    });
+
+    mid_point.percentage = mid_point.percentage/2;
+
+    mid_point.party = 'mid';
+
+    mid_point.xscale = (self.svgWidth/2) - 50;
+
+
+    for(var i=0;i<data.length;i++) {
+
+        if(data[i].party == 'R')
+            data[i].xscale = self.svgWidth - 50;
+    }
+    //var datafortext =  data;
+
+    var datafortext = data.concat([mid_point]);
+
+    console.log(datafortext);
+
+
+
+    var text = d3.select('#votes-percentage')
+        .select('svg')
+        .selectAll('.votesPercentageText')
+        .data(datafortext);
+
+    text.exit().remove();
+
+    text = text.enter()
+        .append('text')
+        .merge(text);
+
+    text.attr('x',function(d,i){
+
+        if(i == 1)
+            return d.xscale + 10 ;
+        else
+            return d.xscale;
+
+
+    })
+        .attr('y', (0.47 * self.svgHeight))
+        .attr('class',function(d){
+
+            if(d.party == 'mid')
+                return 'votesPercentageText';
+
+            return 'votesPercentageText ' + self.chooseClass(d.party);
+        })
+        .text(function(d){
+
+            if(d.party == 'mid')
+                return 'Popular Vote('+d.percentage+'%)';
+
+            if(d.percentage)
+                return d.percentage + '%';
+            else
+                return ;
+        });
+
+
+
+
 
 
     var centerBar = d3.select('#votes-percentage')
