@@ -206,6 +206,27 @@ VotePercentageChart.prototype.update = function(electionResult,colorScale){
         .on('mouseover',tip.show)
         .on('mouseout',tip.hide);
 
+    var centerBar = d3.select('#votes-percentage')
+        .select('svg')
+        .selectAll('.middlePoint')
+        .data([2]);
+
+    centerBar.exit().remove();
+
+    centerBar = centerBar.enter()
+        .append('rect')
+        .classed('middlePoint',true)
+        .merge(centerBar);
+
+    centerBar
+        .attr('x', self.svgWidth/2)
+        .attr('width', function(d){
+            return d;
+        })
+        .attr('y', (0.46 * self.svgHeight))
+        .attr('height', (0.65 * self.svgHeight) - (0.46 * self.svgHeight) );
+
+
     var text1 = d3.select('#votes-percentage')
         .select('svg')
         .selectAll('.votesPercentageNote')
@@ -316,26 +337,6 @@ VotePercentageChart.prototype.update = function(electionResult,colorScale){
 
 
 
-
-    var centerBar = d3.select('#votes-percentage')
-        .select('svg')
-        .selectAll('.middlePoint')
-        .data([2]);
-
-    centerBar.exit().remove();
-
-    centerBar = centerBar.enter()
-        .append('rect')
-        .classed('middlePoint',true)
-        .merge(centerBar);
-
-    centerBar
-        .attr('x', self.svgWidth/2)
-        .attr('width', function(d){
-            return d;
-        })
-        .attr('y', (0.45 * self.svgHeight))
-        .attr('height', (0.65 * self.svgHeight) - (0.45 * self.svgHeight) );
 
 
     //Display the total percentage of votes won by each party

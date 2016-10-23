@@ -192,7 +192,7 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     i_data.sum = d3.sum(voteChartData,function(d){
 
 
-        if(d.State_Winner.toUpperCase() == 'I') {
+        if(d.RD_Difference == 0) {
 
             return d.Total_EV;
         }
@@ -219,8 +219,8 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     });
     d_data.party = 'D';
 
-    //making the decmocratic to appear a little to the right because it was
-    // overlapping with the independant party for the year 1960
+    //making the democratic to appear a little to the right because it was
+    // overlapping with the independent party for the year 1960
 
     for(i=0;i<voteChartData.length;i++) {
 
