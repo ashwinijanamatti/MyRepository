@@ -125,7 +125,7 @@ function updateBarChart(selectedDimension) {
            .style("text-anchor", "end")
             .attr("dx", "-.8em")
             .attr("dy", ".15em")
-            .attr("transform", "rotate(-90)" );;
+            .attr("transform", "rotate(-90)" );
 		   
 		svg.select("#yAxis")
 		   .transition()
@@ -149,6 +149,8 @@ function updateBarChart(selectedDimension) {
 				.style("fill", function(d){
 					return colorScale(d[selectedDimension]);
 			});
+
+			console.log(this);
 			d3.select(this)
 				.style("fill","orange");
 			updateMap(d);
